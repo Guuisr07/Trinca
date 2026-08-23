@@ -24,8 +24,8 @@ export function render(){
 
 /** Liga a nav inferior. Chamada uma vez, no boot. */
 export function ligarNav(){
-  $$(".nav button").forEach(b => b.addEventListener("click", () => {
-    $$(".nav button").forEach(x => x.classList.remove("on"));
+  $$(".nav button[data-aba]").forEach(b => b.addEventListener("click", () => {
+    $$(".nav button[data-aba]").forEach(x => x.classList.remove("on"));
     b.classList.add("on");
     aba = b.dataset.aba;
     render();

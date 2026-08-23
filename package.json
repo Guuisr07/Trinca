@@ -5,7 +5,7 @@
   "description": "Poker do zero. O app não tem dependência de runtime — playwright é só pros testes de browser.",
   "scripts": {
     "dev": "node serve.mjs",
-    "test": "node tests/regras.test.js && node tests/licao.test.mjs"
+    "test": "node tests/regras.test.js && node tests/licao.test.mjs && node tests/tema.test.mjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"

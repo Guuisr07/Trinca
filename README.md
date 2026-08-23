@@ -19,13 +19,14 @@ Abrir o `index.html` com duplo clique **não funciona**: o browser bloqueia
 ```bash
 npm install     # playwright — dependência de teste, o app não tem nenhuma
 npm run dev     # servidor local, precisa estar de pé
-npm test        # regras + lição de ponta a ponta
+npm test        # regras + lição de ponta a ponta + switch de tema
 ```
 
 - `regras.test.js` — progressão e invariantes de conteúdo, entre elas a regra de que
   nenhuma pergunta cobra algo que ainda não foi ensinado. Node puro.
 - `licao.test.mjs` — joga uma lição inteira acertando tudo, depois erra até acabarem
   as fichas, e passa por abas e volta pra landing exigindo zero erro de runtime.
+- `tema.test.mjs` — o switch troca o tema nos dois lugares e a escolha sobrevive ao reload.
 
 ## Estrutura
 
@@ -71,7 +72,12 @@ tests/regras.test.js
 - **Conteúdo é dado, não código.** Lição nova entra em `data/trilhas.js`, nada mais muda.
 - **O mascote e a marca são PNGs de `assets/marca/`.** Saem da folha `trinca-logo.png`
   por `node tools/cortar-logo.mjs` — mexeu na folha, roda de novo em vez de editar PNG.
-- **Tema é só token.** Escuro é um bloco `prefers-color-scheme` em `base.css` que troca
-  as variáveis; cor fixa fora de token vira dívida na hora de virar o tema.
+- **Tema é só token.** `:root[data-tema="dark"]` em `base.css` troca as variáveis, e
+  `tema.js` só vira o atributo. Cor fixa fora de token vira dívida na hora de virar o tema —
+  inclusive as dos naipes, que moram em `--n-e/--n-c/--n-o/--n-p`.
+- **O tema inicial é resolvido por um `<script>` inline no `<head>`.** Módulo carrega
+  depois da primeira pintura, e a tela piscaria clara antes de virar escura.
+- **`tema.js` é a única exceção ao dono único do localStorage.** Guarda `trinca.tema`;
+  o progresso continua todo em `state.js`.
 - **Ordem dos `<link>` importa.** `base` primeiro (tokens), `motion` por último (sobrescreve
   os estados finais das animações).

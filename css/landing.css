@@ -3,8 +3,6 @@
    Fica montada e escondida com .fora — o topo do app volta pra cá. */
 #inicio{position:fixed;inset:0;z-index:30;overflow-y:auto;overscroll-behavior:contain;
   background:radial-gradient(115% 65% at 14% -12%,var(--capa-1) 0%,var(--bg) 52%,var(--capa-2) 100%)}
-:root{--capa-1:#FFFDF7;--capa-2:#F2E3C7}
-@media (prefers-color-scheme:dark){:root{--capa-1:#241C4F;--capa-2:#0D0A18}}
 #inicio.fora{display:none}
 #inicio.saindo{animation:sai .45s cubic-bezier(.5,0,.9,.4) forwards}
 @keyframes sai{to{opacity:0;transform:scale(1.06)}}
@@ -85,3 +83,9 @@
   .copy .bt{margin-left:0}
 }
 
+
+/* switch de tema no topo (base do componente em app.css) */
+.cabeca .troca-tema{flex:none;padding:0;flex-direction:row;gap:8px;font-size:12px}
+.cabeca .troca-tema .trilho{width:40px;height:22px}
+.cabeca .troca-tema .botao{width:16px;height:16px}
+.cabeca .troca-tema[aria-checked="true"] .botao{translate:18px 0}

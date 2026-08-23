@@ -13,6 +13,12 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap">
 
 <!-- ordem importa: base define os tokens, motion sobrescreve por último -->
+<script>
+  try { document.documentElement.dataset.tema = localStorage.getItem("trinca.tema") ||
+    (matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light"); }
+  catch { document.documentElement.dataset.tema = "light"; }
+</script>
+
 <link rel="icon" href="assets/marca/simbolo.png">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/cartas.css">
@@ -29,6 +35,7 @@
 
   <header class="cabeca">
     <img class="marca-l" src="assets/marca/lockup.png" alt="Trinca">
+    <button class="troca-tema" role="switch" aria-checked="false" aria-label="Mudar para o tema escuro"><span class="trilho"><span class="botao"></span></span><i aria-hidden="true">Tema</i></button>
     <!-- slot do login: o botão "Entrar" entra aqui quando houver conta -->
   </header>
 
@@ -71,6 +78,7 @@
     <button data-aba="trilha" class="on"><span>&#9824;</span>Trilha</button>
     <button data-aba="ranking"><span>&#127942;</span>Ranking</button>
     <button data-aba="perfil"><span>&#128100;</span>Perfil</button>
+    <button class="troca-tema" role="switch" aria-checked="false" aria-label="Mudar para o tema escuro"><span class="trilho"><span class="botao"></span></span><i aria-hidden="true">Tema</i></button>
   </nav>
 </div>
 

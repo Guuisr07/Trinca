@@ -121,3 +121,16 @@
 .conquista b{display:block;font-size:14.5px}
 .conquista small{color:var(--muted);font-size:12.5px}
 
+
+/* ---------- switch de tema ---------- */
+/* Mesma peça na nav do app e no topo da landing — só o tamanho muda. */
+.troca-tema{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;
+  padding:11px 0 14px;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.02em}
+.troca-tema i{font-style:normal}
+.troca-tema .trilho{width:44px;height:24px;border-radius:99px;background:var(--surface-2);
+  border:1px solid var(--line);display:flex;align-items:center;padding:2px;transition:background .2s}
+.troca-tema .botao{width:18px;height:18px;border-radius:50%;background:var(--brass);
+  box-shadow:0 1px 2px #0003;transition:translate .2s cubic-bezier(.3,1.4,.5,1)}
+.troca-tema[aria-checked="true"] .trilho{background:var(--azul-soft)}
+.troca-tema[aria-checked="true"] .botao{translate:20px 0}
+.troca-tema:active .botao{scale:.9}

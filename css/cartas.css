@@ -4,24 +4,28 @@
 .mesa .cap{display:block;margin-bottom:9px}
 .mao{display:flex;gap:6px;justify-content:center}
 /* baralho de 4 cores (padrão PokerStars): ♠ grafite, ♥ vermelho, ♦ azul, ♣ verde */
-.carta{--cor:#241C4F;width:46px;height:64px;border-radius:9px;background:var(--cor);
+.carta{--cor:var(--n-e);width:46px;height:64px;border-radius:9px;background:var(--cor);
   color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
   font-family:var(--disp);font-weight:800;line-height:1;
-  box-shadow:0 3px 0 color-mix(in srgb,var(--cor) 62%,#000);
+  box-shadow:var(--carta-aro),0 3px 0 color-mix(in srgb,var(--cor) 62%,#000);
   animation:vira .35s backwards}
-.carta.n-e{--cor:#241C4F} .carta.n-c{--cor:#E8453F}
-.carta.n-o{--cor:#5B3FA0} .carta.n-p{--cor:#1E8A5B}
-/* no escuro o navy de espadas encosta no fundo — clareia só ele */
-@media (prefers-color-scheme:dark){.carta{--cor:#3A2F6E}.carta.n-e{--cor:#3A2F6E}}
+.carta.n-e{--cor:var(--n-e)} .carta.n-c{--cor:var(--n-c)}
+.carta.n-o{--cor:var(--n-o)} .carta.n-p{--cor:var(--n-p)}
+/* no escuro as faces clareiam (ver --n-* em base.css), então o texto inverte */
+:root[data-tema="dark"] .carta{color:#16112E}
+:root[data-tema="dark"] .pilula-naipe i{color:#16112E}
 .carta u{text-decoration:none;font-size:21px}
 .carta b{font-size:16px;font-weight:600;opacity:.95}
-.carta.mini{width:36px;height:50px;border-radius:7px;box-shadow:0 2px 0 color-mix(in srgb,var(--cor) 62%,#000)}
+.carta.mini{width:36px;height:50px;border-radius:7px;
+  box-shadow:var(--carta-aro),0 2px 0 color-mix(in srgb,var(--cor) 62%,#000)}
 .carta.mini u{font-size:16px} .carta.mini b{font-size:13px}
 .legenda-naipes{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
 .pilula-naipe{display:flex;align-items:center;gap:7px;padding:8px 12px;border-radius:99px;
   background:var(--surface);border:1px solid var(--line);font-size:13.5px;font-weight:600}
-.pilula-naipe i{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;
-  color:#fff;font-style:normal;font-size:13px}
+.pilula-naipe i{--cor:var(--n-e);background:var(--cor);width:22px;height:22px;border-radius:6px;
+  display:grid;place-items:center;color:#fff;font-style:normal;font-size:13px}
+.pilula-naipe i.n-c{--cor:var(--n-c)} .pilula-naipe i.n-o{--cor:var(--n-o)}
+.pilula-naipe i.n-p{--cor:var(--n-p)}
 @keyframes vira{from{transform:rotateY(85deg) translateY(6px);opacity:0}to{transform:none;opacity:1}}
 .opc .mao{justify-content:flex-start;margin-bottom:7px}
 .opc .rot{font-size:13.5px;color:var(--muted);font-weight:600}

@@ -2,10 +2,10 @@
    cor identifica o naipe sem precisar enxergar o símbolo. */
 
 export const NAIPES = {
-  "♠": { k:"e", nome:"Espadas", cor:"#241C4F" },
-  "♥": { k:"c", nome:"Copas",   cor:"#E8453F" },
-  "♦": { k:"o", nome:"Ouros",   cor:"#5B3FA0" },
-  "♣": { k:"p", nome:"Paus",    cor:"#1E8A5B" }
+  "♠": { k:"e", nome:"Espadas" },
+  "♥": { k:"c", nome:"Copas"   },
+  "♦": { k:"o", nome:"Ouros"   },
+  "♣": { k:"p", nome:"Paus"    }
 };
 
 /** "A♠" -> HTML de uma carta. `mini` usa o tamanho reduzido das opções. */
@@ -26,6 +26,6 @@ export function mao(cs, mini){
 /** Legenda cor -> naipe, usada na aula que apresenta o baralho. */
 export function legendaNaipes(){
   return '<div class="legenda-naipes">' + Object.keys(NAIPES).map(s =>
-    '<div class="pilula-naipe"><i style="background:' + NAIPES[s].cor + '">' + s + "</i>" +
+    '<div class="pilula-naipe"><i class="n-' + NAIPES[s].k + '">' + s + "</i>" +
     NAIPES[s].nome + "</div>").join("") + "</div>";
 }
