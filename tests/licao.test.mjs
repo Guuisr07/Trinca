@@ -66,6 +66,33 @@ await p.click("#ir-inicio");
 await p.waitForTimeout(200);
 assert.ok(!await p.locator("#inicio.fora").count(), "botão da marca não voltou pra landing");
 
+/* A mesa da lição (.mesa, cartas.css) já foi sequestrada por uma classe de mesmo
+   nome na landing: virou um feltro de 350px que empurrava as opções pra fora.
+   Cartas do board têm que estar centradas numa caixa baixa. */
+await p.evaluate(() => localStorage.setItem("trinca.v1", JSON.stringify(
+  { xp:200, feitas:{f1:true,f2:true}, acertos:0, erros:0, streak:1, dia:null })));
+await p.reload();
+await p.click("#entrar");                       // reload traz a landing de volta
+await p.click(`[data-licao="f3"]`);
+let conferiu = false;
+for (let volta = 0; volta < 40; volta++){
+  const board = p.locator("#palco .mesa");
+  if (await board.count() && await p.locator("#palco .opc").count()){
+    const caixa = await board.boundingBox();
+    assert.ok(caixa.height < 200, "mesa da lição inflou: " + Math.round(caixa.height) + "px");
+    const cartas = await p.locator("#palco .mesa .carta").first().boundingBox();
+    const desvio = Math.abs((caixa.x + caixa.width/2) - (cartas.x + cartas.width/2));
+    assert.ok(desvio < caixa.width/2 - 40, "cartas do board não estão centradas na mesa");
+    conferiu = true;
+    break;
+  }
+  if (await p.locator("#palco .opc").count()){
+    await p.locator("#palco .opc").first().click();
+    await p.locator("#fb-bt").click();
+  } else await p.locator("#rodape .bt").click();
+}
+
+assert.ok(conferiu, "não chegou na pergunta com board — a checagem da mesa não rodou");
 assert.deepStrictEqual(erros, [], "erro de runtime em algum dos caminhos");
 await b.close();
 console.log("ok — lição concluída (" + xp + " XP), fichas, abas e volta pra landing sem erro");
