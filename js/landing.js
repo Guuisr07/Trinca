@@ -31,7 +31,7 @@ function esconderLanding(){
 }
 
 export function ligarLanding(){
-  const cores = ["#EF5B4C","#F5B82E","#3FA9F5","#22B573","#8E6FE0","#FFFFFF"];
+  const cores = ["#E8453F","#F5B82E","#5B3FA0","#241C4F","#22B573","#F7EFDF"];
   let html = "";
   for (let i = 0; i < 20; i++){
     const t = 24 + Math.random() * 28;

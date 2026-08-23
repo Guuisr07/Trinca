@@ -64,8 +64,8 @@ function passo(){
   const palco = $("#palco"), rodape = $("#rodape").firstElementChild;
   if (p.tipo === "aula"){
     palco.innerHTML = "<h2>" + p.h + "</h2>" +
-      (p.p ? '<div class="dom-fala"><svg class="dom-mini" viewBox="0 0 300 260" aria-hidden="true">' +
-        '<use href="#dom"/></svg><div class="balao">' + p.p + "</div></div>" : "") +
+      (p.p ? '<div class="dom-fala"><img class="dom-mini" src="assets/marca/dom-estuda.png" alt="">' +
+        '<div class="balao">' + p.p + "</div></div>" : "") +
       (p.naipes ? legendaNaipes() : "") +
       (p.cartas ? '<div class="mesa">' + mao(p.cartas) + "</div>" : "") +
       (p.lista ? '<ul class="lista">' + p.lista.map((li, n) =>
@@ -119,7 +119,7 @@ function semFichas(){
   $("#pg").style.width = "0%";
   $("#rodape").firstElementChild.innerHTML = "";
   $("#palco").innerHTML =
-    '<div class="fim"><div class="selo">🪙</div><h2>Acabaram suas fichas</h2>' +
+    '<div class="fim"><img class="selo" alt="" src="assets/marca/dom-tira.png"><h2>Acabaram suas fichas</h2>' +
     "<p>Sem drama: revisar é parte do jogo. Refaça a lição — o conteúdo é o mesmo, " +
     "e da segunda vez ele gruda.</p>" +
     '<button class="bt" id="denovo">Tentar de novo</button>' +
@@ -138,7 +138,8 @@ function concluir(){
   $("#pg").style.width = "100%";
   $("#rodape").firstElementChild.innerHTML = "";
   $("#palco").innerHTML =
-    '<div class="fim"><div class="selo">' + (L.errou ? "👏" : "🏅") + "</div>" +
+    '<div class="fim"><img class="selo" alt="" src="assets/marca/' +
+      (L.errou ? "dom-pensa" : "dom-vibra") + '.png">' +
     "<h2>" + (L.errou ? "Lição fechada!" : "Sem errar uma!") + "</h2>" +
     "<p>" + L.licao.titulo + (nova ? " desbloqueou a próxima." : " revisada.") + "</p>" +
     '<div class="premios">' +

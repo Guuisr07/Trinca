@@ -7,7 +7,7 @@ export function confete(){
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const cv = $("#confete"), ctx = cv.getContext("2d");
   cv.width = innerWidth; cv.height = innerHeight;
-  const cores = ["#B4831F", "#2E8B57", "#C0392B", "#E3B04B", "#F5F7F2"];
+  const cores = ["#F5B82E", "#E8453F", "#5B3FA0", "#241C4F", "#F7EFDF"];
   const fichas = Array.from({length:70}, () => ({
     x: Math.random() * cv.width, y: -20 - Math.random() * cv.height * 0.5,
     r: 4 + Math.random() * 5, vy: 2 + Math.random() * 3.5, vx: -1 + Math.random() * 2,

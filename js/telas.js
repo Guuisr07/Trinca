@@ -87,7 +87,7 @@ function telaTrilha(){
     });
     html += "</div>";
     html += '<div class="fim-trilha"><div class="fichinhas">' +
-      ["#C0392B","#E3B04B","#2A7FD4","#2E8B57"].map(c =>
+      ["#E8453F","#F5B82E","#5B3FA0","#241C4F"].map(c =>
         '<i style="background:' + c + '"></i>').join("") + "</div>" +
       (pct === 100 ? "Trilha fechada. Boa!" : feitas + " de " + t.licoes.length +
         " lições — falta pouco") + "</div>";

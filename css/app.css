@@ -11,7 +11,7 @@
 .marca:hover{background:var(--surface-2)}
 .marca:active{transform:scale(.96)}
 .marca .chevron{font-size:17px;line-height:1;color:var(--muted);font-weight:600}
-.marca i{font-style:normal;color:var(--brass)}
+.marca img{height:26px;width:auto;display:block}
 .stat{display:flex;align-items:center;gap:5px;font-weight:600;font-size:15px;
   font-variant-numeric:tabular-nums}
 .stat .ico{font-size:17px;line-height:1}

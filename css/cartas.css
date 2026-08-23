@@ -4,13 +4,15 @@
 .mesa .cap{display:block;margin-bottom:9px}
 .mao{display:flex;gap:6px;justify-content:center}
 /* baralho de 4 cores (padrão PokerStars): ♠ grafite, ♥ vermelho, ♦ azul, ♣ verde */
-.carta{--cor:#2F3A3C;width:46px;height:64px;border-radius:9px;background:var(--cor);
+.carta{--cor:#241C4F;width:46px;height:64px;border-radius:9px;background:var(--cor);
   color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
   font-family:var(--disp);font-weight:800;line-height:1;
   box-shadow:0 3px 0 color-mix(in srgb,var(--cor) 62%,#000);
   animation:vira .35s backwards}
-.carta.n-e{--cor:#2F3A3C} .carta.n-c{--cor:#C0392B}
-.carta.n-o{--cor:#2A7FD4} .carta.n-p{--cor:#2E8B57}
+.carta.n-e{--cor:#241C4F} .carta.n-c{--cor:#E8453F}
+.carta.n-o{--cor:#5B3FA0} .carta.n-p{--cor:#1E8A5B}
+/* no escuro o navy de espadas encosta no fundo — clareia só ele */
+@media (prefers-color-scheme:dark){.carta{--cor:#3A2F6E}.carta.n-e{--cor:#3A2F6E}}
 .carta u{text-decoration:none;font-size:21px}
 .carta b{font-size:16px;font-weight:600;opacity:.95}
 .carta.mini{width:36px;height:50px;border-radius:7px;box-shadow:0 2px 0 color-mix(in srgb,var(--cor) 62%,#000)}

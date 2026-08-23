@@ -49,7 +49,8 @@
 
 /* ---------- fim ---------- */
 .fim{text-align:center;padding:40px 20px}
-.fim .selo{font-size:64px;animation:sobe .5s cubic-bezier(.2,1.4,.4,1)}
+.fim .selo{width:150px;height:auto;margin:0 auto;display:block;
+  animation:sobe .5s cubic-bezier(.2,1.4,.4,1)}
 @keyframes sobe{from{transform:scale(.3) rotate(-18deg);opacity:0}to{transform:none;opacity:1}}
 .fim h2{font-size:30px;margin:12px 0 8px}
 .fim > p{color:var(--muted);margin:0 0 24px;font-size:15px}

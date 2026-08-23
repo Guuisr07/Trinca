@@ -19,19 +19,18 @@ Abrir o `index.html` com duplo clique **não funciona**: o browser bloqueia
 ```bash
 npm install     # playwright — dependência de teste, o app não tem nenhuma
 npm run dev     # servidor local, precisa estar de pé
-npm test        # regras + lição de ponta a ponta + animações do mascote
+npm test        # regras + lição de ponta a ponta
 ```
 
 - `regras.test.js` — progressão e invariantes de conteúdo, entre elas a regra de que
   nenhuma pergunta cobra algo que ainda não foi ensinado. Node puro.
 - `licao.test.mjs` — joga uma lição inteira acertando tudo, depois erra até acabarem
   as fichas, e passa por abas e volta pra landing exigindo zero erro de runtime.
-- `dom-anima.test.mjs` — o mascote precisa estar animado de fato.
 
 ## Estrutura
 
 ```
-index.html          markup + as animações do mascote (ver regra abaixo)
+index.html          markup do app inteiro
 netlify.toml        deploy: publica a raiz, sem build
 serve.mjs           servidor estático local, zero dependência
 css/
@@ -42,6 +41,11 @@ css/
   licao.css         modal de lição
   landing.css       tela de entrada
   motion.css        prefers-reduced-motion (carrega por último de propósito)
+assets/
+  trinca-logo.png   folha original do logo + poses do Dom Naipe
+  marca/            peças recortadas dela: lockup, símbolo, wordmark, poses
+tools/
+  cortar-logo.mjs   recorta a folha em PNGs com fundo transparente
 data/
   trilhas.js        todo o conteúdo das lições — só dados
   bots.js           oponentes do ranking
@@ -65,8 +69,9 @@ tests/regras.test.js
 - **Sem ciclo de import.** `telas.js → licao.js`; a volta é o callback que `main.js` injeta
   em `ligarLicao(render)`.
 - **Conteúdo é dado, não código.** Lição nova entra em `data/trilhas.js`, nada mais muda.
-- **As animações do mascote moram dentro do `<symbol id="dom">`, não em `dom.css`.**
-  `<use>` clona o símbolo num shadow tree, e seletor de folha externa não atravessa
-  shadow — CSS de fora simplesmente não aplica. Por isso o `<style>` inline.
+- **O mascote e a marca são PNGs de `assets/marca/`.** Saem da folha `trinca-logo.png`
+  por `node tools/cortar-logo.mjs` — mexeu na folha, roda de novo em vez de editar PNG.
+- **Tema é só token.** Escuro é um bloco `prefers-color-scheme` em `base.css` que troca
+  as variáveis; cor fixa fora de token vira dívida na hora de virar o tema.
 - **Ordem dos `<link>` importa.** `base` primeiro (tokens), `motion` por último (sobrescreve
   os estados finais das animações).

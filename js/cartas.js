@@ -2,10 +2,10 @@
    cor identifica o naipe sem precisar enxergar o símbolo. */
 
 export const NAIPES = {
-  "♠": { k:"e", nome:"Espadas", cor:"#2F3A3C" },
-  "♥": { k:"c", nome:"Copas",   cor:"#C0392B" },
-  "♦": { k:"o", nome:"Ouros",   cor:"#2A7FD4" },
-  "♣": { k:"p", nome:"Paus",    cor:"#2E8B57" }
+  "♠": { k:"e", nome:"Espadas", cor:"#241C4F" },
+  "♥": { k:"c", nome:"Copas",   cor:"#E8453F" },
+  "♦": { k:"o", nome:"Ouros",   cor:"#5B3FA0" },
+  "♣": { k:"p", nome:"Paus",    cor:"#1E8A5B" }
 };
 
 /** "A♠" -> HTML de uma carta. `mini` usa o tamanho reduzido das opções. */

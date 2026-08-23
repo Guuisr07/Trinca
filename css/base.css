@@ -1,15 +1,27 @@
 /* Tokens, reset e primitivas usadas em todas as telas. */
-/* Flat 2.0: paleta clara e vibrante, sombras chapadas, sem modo escuro */
+/* Flat 2.0: paleta do logo — creme, navy, ouro e vermelho.
+   Tema escuro é só troca de token: segue a preferência do sistema. */
 :root{
-  --bg:#F4F9F5; --surface:#FFFFFF; --surface-2:#E9F4EC;
-  --ink:#173A2C; --muted:#63836F; --line:#D3E7D9;
-  --brass:#F5B82E; --brass-ink:#3B2A05; --brass-soft:#FFF2CF;
+  --bg:#FAF3E6; --surface:#FFFFFF; --surface-2:#F3E9D7;
+  --ink:#241C4F; --muted:#6C6493; --line:#E7DAC3;
+  --brass:#F5B82E; --brass-ink:#3B2A05; --brass-soft:#FFF0CE;
   --ok:#22B573; --ok-soft:#DDF7EA;
-  --no:#EF5B4C; --no-soft:#FFE5E1;
-  --azul:#3FA9F5; --azul-soft:#DFF0FE;
+  --no:#E8453F; --no-soft:#FDE2E0;
+  --azul:#5B3FA0; --azul-soft:#EBE4F8;
   --shadow:0 2px 0 var(--line);
   --disp:"Bricolage Grotesque",Georgia,serif;
   --body:"Instrument Sans",system-ui,-apple-system,Segoe UI,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#141024; --surface:#1E1838; --surface-2:#29224A;
+    --ink:#F7EFDF; --muted:#A79FC8; --line:#352C5C;
+    --brass:#F5B82E; --brass-ink:#2A1D03; --brass-soft:#4A3712;
+    --ok:#2ECC8B; --ok-soft:#173D33;
+    --no:#F4675F; --no-soft:#43201F;
+    --azul:#8E6FE0; --azul-soft:#2C2350;
+    --shadow:0 2px 0 #00000059;
+  }
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);
