@@ -6,13 +6,13 @@
    Precisa de playwright disponível (npx playwright ...). */
 import { chromium } from "playwright";
 import assert from "node:assert";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { dirname, join } from "node:path";
 
 const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
 const b = await chromium.launch();
 const p = await b.newPage();
-await p.goto("file:///" + join(raiz, "index.html").replace(/\/g, "/"));
+await p.goto(pathToFileURL(join(raiz, "index.html")).href);
 await p.waitForTimeout(300);
 
 const rodando = new Set((await p.evaluate(() =>

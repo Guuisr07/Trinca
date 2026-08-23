@@ -134,7 +134,7 @@ function concluir(){
   const nova = !S.feitas[L.licao.id];
   S.feitas[L.licao.id] = true;
   S.xp += ganho;
-  marcarDia(); salvar(); pintarTopo();
+  marcarDia(); salvar();   // o topo é repintado por aoFechar() -> render()
   $("#pg").style.width = "100%";
   $("#rodape").firstElementChild.innerHTML = "";
   $("#palco").innerHTML =

@@ -17,14 +17,16 @@ Abrir o `index.html` com duplo clique **não funciona**: o browser bloqueia
 ## Testar
 
 ```bash
-node tests/
-  regras.test.js
-  dom-anima.test.mjs      # progressão e invariantes de conteúdo
-node tests/dom-anima.test.mjs  # mascote animado (precisa de playwright)
+npm install     # playwright — dependência de teste, o app não tem nenhuma
+npm run dev     # servidor local, precisa estar de pé
+npm test        # regras + lição de ponta a ponta + animações do mascote
 ```
 
-Valida a progressão (o que abre quando) e as invariantes de conteúdo — entre elas
-a regra de que nenhuma pergunta pode cobrar algo que ainda não foi ensinado.
+- `regras.test.js` — progressão e invariantes de conteúdo, entre elas a regra de que
+  nenhuma pergunta cobra algo que ainda não foi ensinado. Node puro.
+- `licao.test.mjs` — joga uma lição inteira acertando tudo, depois erra até acabarem
+  as fichas, e passa por abas e volta pra landing exigindo zero erro de runtime.
+- `dom-anima.test.mjs` — o mascote precisa estar animado de fato.
 
 ## Estrutura
 
