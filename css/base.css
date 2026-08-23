@@ -1,0 +1,26 @@
+/* Tokens, reset e primitivas usadas em todas as telas. */
+/* Flat 2.0: paleta clara e vibrante, sombras chapadas, sem modo escuro */
+:root{
+  --bg:#F4F9F5; --surface:#FFFFFF; --surface-2:#E9F4EC;
+  --ink:#173A2C; --muted:#63836F; --line:#D3E7D9;
+  --brass:#F5B82E; --brass-ink:#3B2A05; --brass-soft:#FFF2CF;
+  --ok:#22B573; --ok-soft:#DDF7EA;
+  --no:#EF5B4C; --no-soft:#FFE5E1;
+  --azul:#3FA9F5; --azul-soft:#DFF0FE;
+  --shadow:0 2px 0 var(--line);
+  --disp:"Bricolage Grotesque",Georgia,serif;
+  --body:"Instrument Sans",system-ui,-apple-system,Segoe UI,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+h1,h2,h3{font-family:var(--disp);text-wrap:balance;margin:0;letter-spacing:-.02em}
+
+/* ---------- primitivas ---------- */
+.cap{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.bt{display:block;width:100%;text-align:center;background:var(--brass);color:var(--brass-ink);
+  font-weight:700;font-size:16px;letter-spacing:.02em;padding:15px;border-radius:14px;
+  box-shadow:0 4px 0 color-mix(in srgb,var(--brass) 60%,#000);transition:transform .1s}
+.bt:active{transform:translateY(4px);box-shadow:none}
+.bt.fantasma{background:transparent;color:var(--muted);box-shadow:none;border:2px solid var(--line)}

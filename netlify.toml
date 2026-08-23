@@ -1,0 +1,9 @@
+# Site estático: nada pra buildar, o próprio repositório é o que vai pro ar.
+[build]
+  publish = "."
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

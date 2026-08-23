@@ -1,0 +1,85 @@
+/* Tela de entrada. Texto primeiro, mascote contido numa mesa que é objeto da
+   página (e não mais o fundo dela). Vira duas colunas a partir de 860px.
+   Fica montada e escondida com .fora — o topo do app volta pra cá. */
+#inicio{position:fixed;inset:0;z-index:30;overflow-y:auto;overscroll-behavior:contain;
+  background:radial-gradient(115% 65% at 14% -12%,#FFFFFF 0%,var(--bg) 52%,#DDF1E4 100%)}
+#inicio.fora{display:none}
+#inicio.saindo{animation:sai .45s cubic-bezier(.5,0,.9,.4) forwards}
+@keyframes sai{to{opacity:0;transform:scale(1.06)}}
+
+/* chuva de fichas: fundo inteiro, atrás de tudo */
+.chuva{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.42}
+.ficha-cai{position:absolute;top:-70px;border-radius:50%;
+  animation:cai linear infinite,gira 1.9s linear infinite}
+@keyframes cai{from{translate:0 -80px}to{translate:0 112vh}}
+@keyframes gira{50%{scale:.16 1}}
+
+.cabeca{position:relative;z-index:2;max-width:1080px;margin:0 auto;
+  display:flex;align-items:center;gap:12px;padding:18px 22px 4px}
+.marca-l{display:flex;align-items:center;gap:7px;margin-right:auto;
+  font-family:var(--disp);font-weight:800;font-size:21px;letter-spacing:-.03em}
+.marca-l i{font-style:normal;color:var(--brass)}
+
+.capa{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:10px 22px 0;
+  display:grid;gap:28px}
+.copy{text-align:center}
+.copy h1{font-size:clamp(42px,12vw,66px);font-weight:800;line-height:.95;letter-spacing:-.04em}
+.copy h1 span{position:relative;display:inline-block}
+.copy h1 span::after{content:"";position:absolute;left:-2%;right:-2%;bottom:6px;height:11px;
+  background:var(--brass);border-radius:99px;z-index:-1;transform-origin:left}
+@keyframes risca{from{transform:scaleX(0)}}
+.copy .tag{margin:14px auto 22px;max-width:400px;color:var(--muted);
+  font-size:16px;line-height:1.55}
+.copy .bt{max-width:340px;margin:0 auto;font-size:17px;padding:17px}
+.copy .rodapinho{margin:12px 0 0;font-size:12.5px;color:var(--muted)}
+
+/* mesa: o feltro virou um objeto com borda, não o fundo da tela */
+.mesa{position:relative;overflow:hidden;width:100%;max-width:440px;margin:0 auto;
+  aspect-ratio:1/.80;border-radius:26px;display:grid;place-items:end center;
+  background:radial-gradient(120% 105% at 50% -5%,#43C48D 0%,#2FB37A 48%,#249C68 100%);
+  box-shadow:inset 0 3px 0 #ffffff45,0 10px 0 #1C8B5C,0 22px 44px #17372b26}
+.mesa::after{content:"";position:absolute;inset:15px;border-radius:18px;
+  border:2px dashed #ffffff4d;border-bottom:0;pointer-events:none}
+.dealer{position:relative;z-index:2;width:min(320px,90%)}
+#inicio.intro .dealer{animation:sobe-dealer .8s .1s cubic-bezier(.2,1.3,.4,1) backwards}
+@keyframes sobe-dealer{from{transform:translateY(80px);opacity:0}}
+/* fundo que gira atrás do Dom, agora recortado pela mesa */
+.raios{position:absolute;left:50%;top:64%;width:190%;aspect-ratio:1;
+  transform:translate(-50%,-50%);border-radius:50%;opacity:.34;
+  background:repeating-conic-gradient(from 0deg,#FFFFFF 0 7deg,transparent 7deg 14deg);
+  -webkit-mask-image:radial-gradient(closest-side,#000 22%,transparent 68%);
+  mask-image:radial-gradient(closest-side,#000 22%,transparent 68%);
+  animation:roda 80s linear infinite}
+@keyframes roda{to{rotate:360deg}}
+.anel{position:absolute;left:50%;top:70%;width:130px;height:130px;margin:-65px 0 0 -65px;
+  border:3px dashed #ffffff59;border-radius:50%;animation:anel 6.5s ease-out infinite}
+.anel:nth-of-type(2){animation-delay:2.2s} .anel:nth-of-type(3){animation-delay:4.4s}
+@keyframes anel{from{scale:.35;opacity:.9}to{scale:2.6;opacity:0}}
+
+.pilares{position:relative;z-index:2;list-style:none;max-width:1080px;
+  margin:26px auto 38px;padding:0 22px;display:grid;gap:10px}
+.pilares li{background:var(--surface);border:1px solid var(--line);border-radius:16px;
+  padding:15px 17px;color:var(--muted);font-size:14px;line-height:1.5;box-shadow:var(--shadow)}
+.pilares i{display:block;font-style:normal;font-size:21px;line-height:1;margin-bottom:8px}
+.pilares b{display:block;font-family:var(--disp);font-size:16.5px;color:var(--ink);margin-bottom:3px}
+
+/* entrada escalonada — só na primeira exibição (ver .intro em landing.js) */
+#inicio.intro .copy h1 span::after{animation:risca .5s .85s cubic-bezier(.2,.9,.2,1) backwards}
+#inicio.intro .copy > *{animation:sobe-item .55s cubic-bezier(.2,1.1,.4,1) backwards}
+#inicio.intro .copy .assina{animation-delay:.35s} #inicio.intro .copy h1{animation-delay:.45s}
+#inicio.intro .copy .tag{animation-delay:.55s} #inicio.intro .copy .bt{animation-delay:.63s}
+#inicio.intro .copy .rodapinho{animation-delay:.71s}
+#inicio.intro .pilares li{animation:sobe-item .55s .8s cubic-bezier(.2,1.1,.4,1) backwards}
+#inicio.intro .pilares li:nth-child(2){animation-delay:.87s}
+#inicio.intro .pilares li:nth-child(3){animation-delay:.94s}
+@keyframes sobe-item{from{opacity:0;transform:translateY(14px)}}
+
+@media (min-width:700px){.pilares{grid-template-columns:repeat(3,1fr)}}
+@media (min-width:860px){
+  .capa{grid-template-columns:1.02fr .98fr;align-items:center;gap:46px;
+    padding-top:22px;min-height:58vh}
+  .copy{text-align:left}
+  .copy .assina{justify-content:flex-start}
+  .copy .tag{margin-left:0}
+  .copy .bt{margin-left:0}
+}

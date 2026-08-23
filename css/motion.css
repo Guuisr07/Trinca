@@ -1,0 +1,6 @@
+/* Respeita prefers-reduced-motion. Carregado por último de propósito:
+   precisa sobrescrever os estados finais que as animações deixariam. */
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .hero h1 span::after{transform:scaleX(1)}
+}

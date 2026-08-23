@@ -1,0 +1,61 @@
+/* Modal de lição: cabeçalho, palco, opções, feedback e tela de fim. */
+#licao{display:none;flex-direction:column;min-height:100vh}
+#licao.on{display:flex;position:fixed;inset:0;z-index:10;background:var(--bg);overflow-y:auto}
+.licao-topo{display:flex;align-items:center;gap:12px;padding:16px 18px 8px}
+.sair{font-size:24px;color:var(--muted);line-height:1;padding:0 2px}
+.progresso{flex:1;height:14px;border-radius:99px;background:var(--surface-2);
+  border:1px solid var(--line);overflow:hidden}
+.progresso > i{display:block;height:100%;background:var(--brass);
+  transition:width .45s cubic-bezier(.2,.9,.2,1)}
+.fichas{display:flex;gap:3px}
+.ficha{width:15px;height:15px;border-radius:50%;background:var(--no);
+  border:2.5px dashed color-mix(in srgb,var(--no) 55%,#fff);transition:.3s}
+.ficha.perdida{background:var(--surface-2);border-color:var(--line);transform:scale(.75)}
+.palco{flex:1;padding:22px 18px 150px;animation:entra .32s cubic-bezier(.2,.9,.2,1)}
+@keyframes entra{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+.palco h2{font-size:25px;margin-bottom:14px}
+.palco .ensina{color:var(--ink);font-size:16px;line-height:1.62;margin:0 0 16px}
+.palco .ensina em{font-style:normal;background:var(--brass-soft);color:var(--ink);
+  padding:1px 5px;border-radius:5px;font-weight:600}
+.lista{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:7px}
+.lista li{display:flex;gap:11px;align-items:baseline;background:var(--surface);
+  border:1px solid var(--line);border-radius:12px;padding:11px 13px;font-size:14.5px;line-height:1.45}
+.lista li i{font-style:normal;font-weight:700;color:var(--brass);font-variant-numeric:tabular-nums;
+  min-width:18px}
+.pergunta{font-family:var(--disp);font-size:23px;font-weight:700;margin-bottom:18px;line-height:1.25}
+.opcoes{display:flex;flex-direction:column;gap:10px}
+.opc{width:100%;text-align:left;background:var(--surface);border:2px solid var(--line);
+  border-radius:14px;padding:14px 16px;font-size:15.5px;font-weight:500;
+  box-shadow:0 3px 0 var(--line);transition:transform .1s,border-color .15s,background .15s}
+.opc:hover{border-color:var(--brass)}
+.opc:active{transform:translateY(3px);box-shadow:none}
+.opc:disabled{cursor:default}
+.opc.certa{border-color:var(--ok);background:var(--ok-soft);box-shadow:0 3px 0 var(--ok)}
+.opc.errada{border-color:var(--no);background:var(--no-soft);box-shadow:0 3px 0 var(--no)}
+.opc:focus-visible{outline:3px solid var(--brass);outline-offset:2px}
+
+
+.feedback{position:fixed;left:0;right:0;bottom:0;background:var(--surface);
+  border-top:1px solid var(--line);padding:18px 18px 22px;transform:translateY(105%);
+  transition:transform .3s cubic-bezier(.2,.9,.2,1);z-index:9}
+.feedback.on{transform:none}
+.feedback .titulo{font-family:var(--disp);font-size:19px;font-weight:800;display:flex;
+  align-items:center;gap:8px;margin-bottom:5px}
+.feedback.bom .titulo{color:var(--ok)} .feedback.ruim .titulo{color:var(--no)}
+.feedback p{margin:0 0 14px;font-size:14.5px;line-height:1.55;color:var(--muted)}
+.rodape-fixo{position:fixed;left:0;right:0;bottom:0;padding:16px 18px 22px;
+  background:linear-gradient(transparent,var(--bg) 32%);z-index:8}
+.rodape-fixo .interno{max-width:520px;margin:0 auto}
+
+/* ---------- fim ---------- */
+.fim{text-align:center;padding:40px 20px}
+.fim .selo{font-size:64px;animation:sobe .5s cubic-bezier(.2,1.4,.4,1)}
+@keyframes sobe{from{transform:scale(.3) rotate(-18deg);opacity:0}to{transform:none;opacity:1}}
+.fim h2{font-size:30px;margin:12px 0 8px}
+.fim > p{color:var(--muted);margin:0 0 24px;font-size:15px}
+.premios{display:flex;gap:10px;justify-content:center;margin-bottom:26px}
+.premio{flex:1;max-width:150px;border:2px solid var(--brass);border-radius:16px;overflow:hidden}
+.premio .cap{display:block;background:var(--brass);color:var(--brass-ink);padding:5px;font-weight:700}
+.premio b{display:block;font-family:var(--disp);font-size:26px;padding:12px 0;
+  font-variant-numeric:tabular-nums}
+canvas#confete{position:fixed;inset:0;pointer-events:none;z-index:20}

@@ -1,0 +1,123 @@
+/* Shell do app logado: topo, trilha, ranking, perfil e nav inferior. */
+.app{max-width:520px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+/* ---------- topo ---------- */
+.topo{position:sticky;top:0;z-index:5;background:var(--bg);
+  display:flex;align-items:center;gap:14px;padding:16px 18px 12px}
+/* a marca é o caminho de volta pra landing (onde o login vai morar) */
+.marca{font-family:var(--disp);font-weight:800;font-size:22px;letter-spacing:-.03em;
+  display:flex;align-items:center;gap:5px;margin-right:auto;
+  padding:4px 10px 4px 4px;margin-left:-4px;border-radius:12px;
+  transition:background .15s ease,transform .1s ease}
+.marca:hover{background:var(--surface-2)}
+.marca:active{transform:scale(.96)}
+.marca .chevron{font-size:17px;line-height:1;color:var(--muted);font-weight:600}
+.marca i{font-style:normal;color:var(--brass)}
+.stat{display:flex;align-items:center;gap:5px;font-weight:600;font-size:15px;
+  font-variant-numeric:tabular-nums}
+.stat .ico{font-size:17px;line-height:1}
+
+/* ---------- trilha ---------- */
+.faixa{padding:6px 18px 22px}
+/* --- destaque "continuar" --- */
+.destaque{position:relative;overflow:hidden;background:linear-gradient(150deg,var(--brass),
+  color-mix(in srgb,var(--brass) 72%,#000));color:var(--brass-ink);border-radius:20px;
+  padding:18px 18px 16px;margin-bottom:16px;box-shadow:0 6px 0 color-mix(in srgb,var(--brass) 55%,#000)}
+.destaque .cap{color:color-mix(in srgb,var(--brass-ink) 72%,transparent)}
+.destaque h2{font-size:22px;margin:5px 0 4px}
+.destaque p{margin:0 0 14px;font-size:13.5px;opacity:.85;line-height:1.45}
+.destaque .bt{background:var(--brass-ink);color:var(--brass);box-shadow:none;padding:13px;font-size:15px}
+.destaque .naipe-marca{position:absolute;right:-14px;top:-22px;font-size:120px;line-height:1;
+  opacity:.13;pointer-events:none}
+.destaque .icone-licao{position:absolute;right:18px;bottom:16px;font-size:40px;opacity:.9}
+
+/* --- faixa de metas --- */
+.metas{display:flex;gap:8px;margin-bottom:22px}
+.meta{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:14px;
+  padding:11px 8px;text-align:center}
+.meta i{display:block;font-style:normal;font-size:19px;line-height:1;margin-bottom:5px}
+.meta b{display:block;font-family:var(--disp);font-size:17px;font-variant-numeric:tabular-nums}
+.meta small{color:var(--muted);font-size:10.5px;letter-spacing:.03em}
+
+.cabecalho-trilha{position:relative;overflow:hidden;background:var(--surface);
+  border:1px solid var(--line);border-radius:18px;
+  padding:16px 18px;margin-bottom:26px;box-shadow:var(--shadow)}
+.cabecalho-trilha .naipe-marca{position:absolute;right:-10px;top:-26px;font-size:104px;line-height:1;
+  color:var(--brass);opacity:.09;pointer-events:none}
+.cabecalho-trilha h2{position:relative}
+.cabecalho-trilha h2{font-size:23px;margin:6px 0 6px}
+.cabecalho-trilha p{margin:0;color:var(--muted);font-size:14px;line-height:1.5}
+.barra{height:8px;border-radius:99px;background:var(--surface-2);
+  border:1px solid var(--line);overflow:hidden;margin-top:14px}
+.barra > i{display:block;height:100%;background:var(--brass);
+  transition:width .6s cubic-bezier(.2,.9,.2,1)}
+.trilha{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px}
+.no{position:relative;display:flex;flex-direction:column;align-items:center;gap:7px;
+  padding:8px 0}
+.no .bolha{width:78px;height:78px;border-radius:50%;display:grid;place-items:center;
+  font-size:30px;background:var(--surface);border:2px solid var(--line);
+  box-shadow:0 5px 0 var(--line);transition:transform .12s ease, box-shadow .12s ease}
+.no button:active .bolha{transform:translateY(4px);box-shadow:0 1px 0 var(--line)}
+.no.pronta .bolha{background:var(--brass);border-color:transparent;color:var(--brass-ink);
+  box-shadow:0 5px 0 color-mix(in srgb,var(--brass) 65%,#000)}
+.no.feita .bolha{background:var(--ok);border-color:transparent;color:#fff;
+  box-shadow:0 5px 0 color-mix(in srgb,var(--ok) 65%,#000)}
+.no.travada .bolha{opacity:.45;filter:grayscale(1)}
+.no.travada button{cursor:not-allowed}
+.no b{font-size:13.5px;font-weight:600;max-width:190px;text-align:center;line-height:1.35}
+.no small{color:var(--muted);font-size:11.5px}
+.no.pronta .bolha::after{content:"";position:absolute;width:78px;height:78px;border-radius:50%;
+  border:2px solid var(--brass);animation:pulso 2.4s ease-out infinite}
+@keyframes pulso{0%{transform:scale(1);opacity:.7}70%,100%{transform:scale(1.5);opacity:0}}
+.fio{width:3px;height:24px;background:repeating-linear-gradient(var(--line) 0 6px,transparent 6px 12px)}
+.desloc-1{transform:translateX(64px)} .desloc-2{transform:translateX(-64px)}
+.desloc-3{transform:translateX(34px)} .desloc-4{transform:translateX(-34px)}
+.no .xpzinho{font-size:10.5px;font-weight:700;letter-spacing:.06em;color:var(--brass);
+  background:var(--brass-soft);border-radius:99px;padding:2px 8px}
+.no.travada .xpzinho{color:var(--muted);background:var(--surface-2)}
+.fim-trilha{display:flex;flex-direction:column;align-items:center;gap:6px;margin:28px 0 4px;
+  color:var(--muted);font-size:12.5px}
+.fim-trilha .fichinhas{display:flex;gap:5px}
+.fim-trilha .fichinhas i{width:13px;height:13px;border-radius:50%;display:block;
+  box-shadow:inset 0 0 0 2.5px #ffffffcc}
+.bloco-travado{margin-top:30px;background:var(--surface-2);border:1px dashed var(--line);
+  border-radius:18px;padding:18px;text-align:center}
+.bloco-travado h3{font-size:18px;margin-bottom:6px}
+.bloco-travado p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.5}
+
+/* ---------- nav ---------- */
+.nav{position:sticky;bottom:0;display:flex;background:var(--surface);
+  border-top:1px solid var(--line);margin-top:auto}
+.nav button{flex:1;padding:11px 0 14px;display:flex;flex-direction:column;align-items:center;gap:3px;
+  font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.02em}
+.nav button span{font-size:20px}
+.nav button.on{color:var(--brass)}
+
+/* ---------- ranking ---------- */
+.liga{background:linear-gradient(160deg,var(--brass-soft),var(--surface));
+  border:1px solid var(--line);border-radius:18px;padding:20px;text-align:center;margin-bottom:18px}
+.liga .medalha{font-size:44px;line-height:1}
+.liga h2{font-size:22px;margin:8px 0 4px}
+.liga p{margin:0;color:var(--muted);font-size:13.5px}
+.linha{display:flex;align-items:center;gap:13px;padding:12px 14px;background:var(--surface);
+  border:1px solid var(--line);border-radius:14px;margin-bottom:8px}
+.linha.eu{border-color:var(--brass);background:var(--brass-soft)}
+.linha .pos{width:22px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--muted)}
+.linha.eu .pos{color:var(--brass)}
+.linha .av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+  background:var(--surface-2);font-size:19px;border:1px solid var(--line)}
+.linha .nm{flex:1;font-weight:600;font-size:15px}
+.linha .xp{font-weight:700;font-variant-numeric:tabular-nums;font-size:14px;color:var(--muted)}
+
+/* ---------- perfil ---------- */
+.grade{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.caixa{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:15px}
+.caixa b{display:block;font-family:var(--disp);font-size:27px;line-height:1.1;
+  font-variant-numeric:tabular-nums}
+.caixa small{color:var(--muted);font-size:12px}
+.conquista{display:flex;gap:12px;align-items:center;padding:12px 14px;background:var(--surface);
+  border:1px solid var(--line);border-radius:14px;margin-bottom:8px}
+.conquista.off{opacity:.45}
+.conquista span{font-size:24px}
+.conquista b{display:block;font-size:14.5px}
+.conquista small{color:var(--muted);font-size:12.5px}
+
