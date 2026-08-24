@@ -56,6 +56,7 @@
   /* perfil e ranking ganham a coluna inteira */
   .grade{grid-template-columns:repeat(4,1fr)}
   .faixa .bt{max-width:320px}
+  .fim .bt{max-width:320px;margin-left:auto;margin-right:auto}
 }
 
 /* ---------- 1120px+: trilho de status ---------- */
@@ -134,3 +135,7 @@
   .no button:not(:disabled):hover .bolha{transform:translateY(-2px)}
 }
 :focus-visible{outline:3px solid var(--brass);outline-offset:3px;border-radius:6px}
+
+/* fichas no trilho */
+.rail .fichas{margin-bottom:10px}
+.rail .cartao .link.ativo{color:var(--brass)}

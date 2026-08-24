@@ -44,7 +44,7 @@
 @keyframes sobe-dealer{from{transform:translateY(80px);opacity:0}}
 /* fundo que gira atrás do Dom, agora recortado pela mesa */
 .raios{position:absolute;left:50%;top:64%;width:190%;aspect-ratio:1;
-  transform:translate(-50%,-50%);border-radius:50%;opacity:.34;
+  translate:-50% -50%;border-radius:50%;opacity:.34;
   background:repeating-conic-gradient(from 0deg,#F5B82E 0 7deg,transparent 7deg 14deg);
   -webkit-mask-image:radial-gradient(closest-side,#000 22%,transparent 68%);
   mask-image:radial-gradient(closest-side,#000 22%,transparent 68%);

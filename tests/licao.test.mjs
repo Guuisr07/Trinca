@@ -43,22 +43,55 @@ assert.ok(!await p.locator("#licao.on").count(), "modal não fechou no Continuar
 const xp = await p.textContent("#s-xp");
 assert.strictEqual(xp, String(10 + licao.q.length * 2), "XP do topo não bateu");
 
-/* Caminho das fichas: errar 3 vezes tem que cair na tela "acabaram as fichas".
-   É o outro ramo do mesmo motor, onde um erro igual se esconderia. */
-await p.click(`[data-licao="${licao.id}"]`);
-for (let volta = 0; volta < 30; volta++){
+/* Caminho das fichas: agora elas são do jogador, não da lição. Errar cinco
+   vezes zera o lote e trava lição nova; o que sobra é revisar. */
+const licao2 = TRILHAS[0].licoes[1];
+await p.click(`[data-licao="${licao2.id}"]`);
+for (let volta = 0; volta < 40; volta++){
   if (await p.locator("#palco .fim").count()) break;
   const opcoes = p.locator("#palco .opc");
   if (await opcoes.count()){
-    const errada = gabarito[0] === 0 ? 1 : 0;
-    await opcoes.nth(errada).click();
+    const certa = licao2.q[0].c;                 // qualquer opção que não seja a certa
+    await opcoes.nth(certa === 0 ? 1 : 0).click();
     await p.locator("#fb-bt").click();
   } else await p.locator("#rodape .bt").click();
 }
-assert.ok(await p.locator("#denovo").count(), "3 erros não levaram à tela de fichas");
+assert.ok(await p.locator("#voltar").count(), "cinco erros não levaram à tela de espera");
+assert.ok(await p.locator("[data-espera]").count(), "tela de espera sem contador de recarga");
 await p.click("#voltar");
 await p.waitForTimeout(200);
 assert.ok(!await p.locator("#licao.on").count(), "não voltou pra trilha");
+assert.ok(await p.locator(".aviso-fichas").count(), "trilha não avisou que o lote zerou");
+
+/* Sem ficha: lição nova bate na porta fechada, lição feita abre em revisão. */
+await p.click(`[data-licao="${licao2.id}"]`);
+await p.waitForTimeout(200);
+assert.ok(await p.locator("#licao.sem-fichas").count(), "lição nova abriu sem ficha nenhuma");
+await p.click("#voltar");
+
+await p.click(`[data-licao="${licao.id}"]`);   // essa já foi concluída lá em cima
+await p.waitForTimeout(200);
+assert.ok(await p.locator(".selo-revisao").count(), "lição feita não abriu em revisão");
+const antes = await p.textContent("#s-xp");
+let r = 0;
+for (let volta = 0; volta < 60; volta++){
+  if (await p.locator("#palco .fim").count()) break;
+  const opcoes = p.locator("#palco .opc");
+  if (await opcoes.count()){
+    // erra a primeira de propósito (não pode custar ficha) e acerta o resto,
+    // senão a pergunta errada volta pra fila e a revisão nunca termina
+    const alvo = r === 0 ? (gabarito[0] === 0 ? 1 : 0)
+               : (r < gabarito.length ? gabarito[r] : gabarito[0]);
+    r++;
+    await opcoes.nth(alvo).click();
+    await p.locator("#fb-bt").click();
+  } else await p.locator("#rodape .bt").click();
+}
+assert.ok(await p.locator("#segue").count(), "revisão não chegou ao fim");
+await p.click("#segue");
+await p.waitForTimeout(200);
+assert.strictEqual(await p.textContent("#s-xp"), antes, "revisão pagou XP — vira farm");
+assert.strictEqual(await p.textContent("#s-fichas"), "0/5", "revisão gastou ficha");
 
 // as outras abas e a volta pra landing entram na mesma varredura de erro
 for (const aba of ["ranking", "perfil", "trilha"]) await p.click(`[data-aba="${aba}"]`);
@@ -96,7 +129,7 @@ await p.waitForTimeout(200);
    nome na landing: virou um feltro de 350px que empurrava as opções pra fora.
    Cartas do board têm que estar centradas numa caixa baixa. */
 await p.evaluate(() => localStorage.setItem("trinca.v1", JSON.stringify(
-  { xp:200, feitas:{f1:true,f2:true}, acertos:0, erros:0, streak:1, dia:null })));
+  { xp:200, feitas:{f1:true,f2:true}, acertos:0, erros:0, streak:1, dia:null, vip:true })));
 await p.reload();
 await p.click("#entrar");                       // reload traz a landing de volta
 await p.click(`[data-licao="f3"]`);

@@ -4,7 +4,9 @@
 import { $, $$ } from "./dom.js";
 import { TRILHAS } from "../data/trilhas.js";
 import { BOTS } from "../data/bots.js";
-import { S, zerar, xpDeHoje, META_DIA } from "./state.js";
+import { S, salvar, zerar, xpDeHoje, META_DIA, MAX_VIDAS, vidasAgora,
+         proximaVidaEm, formatarEspera } from "./state.js";
+import { conteudoFichas, pintarEsperas } from "./fichas.js";
 import { liberadas, totalLicoes, feitasCount, proximaLicao, xpPossivel } from "./progresso.js";
 import { abrirLicao } from "./licao.js";
 
@@ -13,6 +15,7 @@ let aba = "trilha";
 export function pintarTopo(){
   $("#s-xp").textContent = S.xp;
   $("#s-streak").textContent = S.streak;
+  $("#s-fichas").textContent = S.vip ? "∞" : vidasAgora() + "/" + MAX_VIDAS;
 }
 
 export function render(){
@@ -56,6 +59,8 @@ function pintarRail(){
       '<span><i>🗺️</i>' + feitasCount() + "/" + totalLicoes() + "</span>" +
     "</div>" +
 
+    cartaoFichas() +
+
     '<div class="cartao"><div class="cartao-topo"><h3>Missão do dia</h3></div>' +
       '<div class="missao"><i>⚡</i><div><b>Ganhe ' + META_DIA + " XP</b>" +
         '<div class="barra"><i style="width:' + pct + '%"></i></div>' +
@@ -76,11 +81,33 @@ function pintarRail(){
 
   $("#rail").querySelectorAll("[data-ir]").forEach(b =>
     b.addEventListener("click", () => irPara(b.dataset.ir)));
+  pintarEsperas();
+}
+
+/** Cartão de fichas do trilho: o lote, o relógio e a isca do Trinca+. */
+function cartaoFichas(){
+  const vivas = vidasAgora();
+  return '<div class="cartao"><div class="cartao-topo"><h3>Fichas</h3>' +
+    '<span class="link' + (S.vip ? " ativo" : "") + '">' +
+      (S.vip ? "Trinca+" : vivas + " de " + MAX_VIDAS) + "</span></div>" +
+    '<div class="fichas' + (S.vip ? " vip" : "") + '">' + conteudoFichas() + "</div>" +
+    "<p class=\"rail-rodape\">" + (S.vip
+      ? "Fichas ilimitadas. Erre à vontade — o erro é onde se aprende."
+      : (vivas > 0
+        ? "Cada erro custa uma ficha. Uma volta a cada 30 minutos."
+        : "Sem ficha, lição nova espera. Revisar uma lição feita não custa nada.")) +
+    "</p></div>";
 }
 
 function telaTrilha(){
   const abertas = liberadas();
+  const semFicha = !S.vip && vidasAgora() <= 0;
   let html = "";
+
+  if (semFicha)
+    html += '<div class="aviso-fichas"><i>&#9888;</i><div><b>Você está sem fichas</b>' +
+      "<span>Lição nova volta em <b data-espera>" + formatarEspera(proximaVidaEm()) +
+      "</b>. Revisar uma lição já concluída continua liberado, de graça.</span></div></div>";
 
   const prox = proximaLicao(abertas);
   if (prox){
@@ -91,7 +118,9 @@ function telaTrilha(){
       "<p>" + prox.trilha.nome + " &middot; " + prox.licao.aula.length + " telas de aula e " +
         prox.licao.q.length + " perguntas &middot; +" + xpPossivel(prox.licao) + " XP possíveis</p>" +
       '<button class="bt" data-licao="' + prox.licao.id + '">' +
-        (nova ? "Jogar lição" : "Revisar lição") + "</button>" +
+        (nova && semFicha
+          ? 'Sem fichas · volta em <span data-espera></span>'
+          : (nova ? "Jogar lição" : "Revisar lição")) + "</button>" +
       '<span class="icone-licao">' + prox.licao.icone + "</span></div>";
   }
 
@@ -135,7 +164,8 @@ function telaTrilha(){
         '<button ' + (pronta || feita ? "" : "disabled ") + 'data-licao="' + l.id + '">' +
         '<div class="bolha">' + (feita ? "✓" : (pronta ? l.icone : "🔒")) + "</div></button>" +
         "<b>" + l.titulo + "</b><small>" +
-        (feita ? "concluída" : (pronta ? "toque pra jogar" : "bloqueada")) + "</small>" +
+        (feita ? "toque pra revisar"
+               : (pronta ? (semFicha ? "sem ficha" : "toque pra jogar") : "bloqueada")) + "</small>" +
         '<span class="xpzinho">' + (feita ? "✓ FEITA" : "+" + xpPossivel(l) + " XP") +
         "</span></div>";
     });
@@ -149,6 +179,7 @@ function telaTrilha(){
   $("#tela").innerHTML = html;
   $("#tela").querySelectorAll("[data-licao]").forEach(b =>
     b.addEventListener("click", () => abrirLicao(b.dataset.licao)));
+  pintarEsperas();
 }
 
 function telaRanking(){
@@ -184,7 +215,19 @@ function telaPerfil(){
     '<div class="cap" style="margin-bottom:10px">Conquistas</div>' +
     conq.map(c => '<div class="conquista' + (c.ok ? "" : " off") + '"><span>' + c.i +
       "</span><div><b>" + c.t + "</b><small>" + c.d + "</small></div></div>").join("") +
+    '<div class="cap" style="margin:22px 0 10px">Trinca+</div>' +
+    '<div class="cartao-vip"><b>Fichas ilimitadas</b>' +
+      "<p>Errar sem contar ficha e sem esperar recarga. O plano ainda não existe " +
+      "de verdade — por enquanto dá pra ligar aqui e sentir como fica.</p>" +
+      '<button class="bt' + (S.vip ? " fantasma" : "") + '" id="vip">' +
+        (S.vip ? "Desligar Trinca+" : "Ligar Trinca+ (prévia)") + "</button></div>" +
     '<button class="bt fantasma" id="zerar" style="margin-top:18px">Zerar meu progresso</button>';
+  // ponytail: chave local, sem cobrança. Vira checagem de assinatura quando houver conta.
+  $("#vip").addEventListener("click", () => {
+    S.vip = !S.vip;
+    if (!S.vip && S.vidas <= 0){ S.vidas = 1; S.gastaEm = Date.now(); }  // não sai devendo
+    salvar(); render();
+  });
   $("#zerar").addEventListener("click", () => {
     if (!confirm("Isso apaga XP, lições e sequência. Continuar?")) return;
     zerar(); render();

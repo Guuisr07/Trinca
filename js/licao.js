@@ -1,13 +1,13 @@
-/* Motor da lição: monta a sequência de passos (aula + perguntas), controla
-   fichas/vidas, feedback e conclusão. É a única tela modal do app. */
+/* Motor da lição: monta a sequência de passos (aula + perguntas), gasta as
+   fichas do jogador, dá feedback e conclui. É a única tela modal do app. */
 
 import { $ } from "./dom.js";
-import { S, salvar, marcarDia } from "./state.js";
+import { S, salvar, marcarDia, vidasAgora, perderVida, proximaVidaEm,
+         formatarEspera, MAX_VIDAS } from "./state.js";
 import { acharLicao } from "./progresso.js";
+import { conteudoFichas, pintarEsperas } from "./fichas.js";
 import { mao, legendaNaipes } from "./cartas.js";
 import { confete } from "./confete.js";
-
-const VIDAS = 3;
 
 /** Lição em andamento, ou null. */
 let L = null;
@@ -19,11 +19,12 @@ let aoFechar = () => {};
 export function ligarLicao(quandoFechar){
   aoFechar = quandoFechar;
   $("#btn-sair").addEventListener("click", () => {
-    if (!L || L.i === 0 || confirm("Sair agora perde o progresso desta lição.")) fecharLicao();
+    if (!L || L.bloqueada || L.i === 0 ||
+        confirm("Sair agora perde o progresso desta lição.")) fecharLicao();
   });
   $("#fb-bt").addEventListener("click", () => {
     if (!L) return;
-    if (L.vidas <= 0) return semFichas();
+    if (!L.revisao && vidasAgora() <= 0) return semFichas();
     L.i++; passo();
   });
   document.addEventListener("keydown", tecla);
@@ -49,19 +50,34 @@ function tecla(e){
 export function abrirLicao(id){
   const licao = acharLicao(id);
   if (!licao) return;
+  /* Lição já concluída abre em revisão: não custa ficha e não paga XP. É o que
+     sobra pra fazer quando o lote zera — e é justamente o que ensina. */
+  const revisao = !!S.feitas[id];
+  abrirModal();
+  if (!revisao && vidasAgora() <= 0){
+    L = { licao, bloqueada:true };
+    return telaSemFichas("Você ficou sem fichas",
+      "Lições novas voltam quando a primeira ficha recarregar. Enquanto isso, " +
+      "revisar uma lição já concluída não custa nada.");
+  }
   L = {
-    licao,
+    licao, revisao,
     passos: licao.aula.map(a => ({ tipo:"aula", ...a }))
       .concat(licao.q.map(q => ({ tipo:"q", ...q }))),
-    i: 0, vidas: VIDAS, deprimeira: 0, total: licao.q.length, errou: false
+    i: 0, deprimeira: 0, total: licao.q.length, errou: false
   };
-  $("#licao").classList.add("on");
-  document.body.style.overflow = "hidden";
   pintarFichas(); passo();
 }
 
+function abrirModal(){
+  $("#licao").classList.add("on");
+  $("#licao").classList.remove("sem-fichas");
+  document.body.style.overflow = "hidden";
+  $("#pg").style.width = "0%";
+}
+
 function fecharLicao(){
-  $("#licao").classList.remove("on");
+  $("#licao").classList.remove("on", "sem-fichas");
   $("#feedback").classList.remove("on", "bom", "ruim");
   document.body.style.overflow = "";
   L = null;
@@ -69,8 +85,10 @@ function fecharLicao(){
 }
 
 function pintarFichas(){
-  $("#fichas").innerHTML = [0,1,2].map(i =>
-    '<div class="ficha' + (i >= L.vidas ? " perdida" : "") + '"></div>').join("");
+  const el = $("#fichas");
+  el.classList.toggle("vip", !!S.vip);
+  el.innerHTML = conteudoFichas();
+  pintarEsperas();
 }
 
 function passo(){
@@ -81,7 +99,8 @@ function passo(){
   const p = L.passos[L.i];
   const palco = $("#palco"), rodape = $("#rodape").firstElementChild;
   if (p.tipo === "aula"){
-    palco.innerHTML = "<h2>" + p.h + "</h2>" +
+    palco.innerHTML = (L.revisao ? '<div class="selo-revisao">Revisão · não gasta ficha</div>' : "") +
+      "<h2>" + p.h + "</h2>" +
       (p.p ? '<div class="dom-fala"><img class="dom-mini" src="assets/marca/dom-estuda.png" alt="">' +
         '<div class="balao">' + p.p + "</div></div>" : "") +
       (p.naipes ? legendaNaipes() : "") +
@@ -99,6 +118,7 @@ function passo(){
         '<div class="rot">Jogador ' + (n+1) + "</div></button>").join("")
     : p.o.map((o, n) => '<button class="opc" data-i="' + n + '">' + o + "</button>").join("");
   palco.innerHTML =
+    (L.revisao ? '<div class="selo-revisao">Revisão · não gasta ficha</div>' : "") +
     '<div class="cap">Pergunta ' + (L.passos.slice(0, L.i).filter(x => x.tipo === "q").length + 1) + "</div>" +
     '<div class="pergunta">' + p.p + "</div>" +
     (p.board ? '<div class="mesa"><span class="cap">Mesa</span>' + mao(p.board, true) + "</div>" : "") +
@@ -121,52 +141,66 @@ function responder(botao, p){
     fb.classList.add("bom");
     $("#fb-titulo").innerHTML = "✓ Isso aí!";
   } else {
-    S.erros++; L.errou = true; L.vidas--; pintarFichas();
+    S.erros++; L.errou = true;
+    if (!L.revisao) perderVida();      // revisão não custa ficha
+    pintarFichas();
     fb.classList.add("ruim");
     $("#fb-titulo").innerHTML = "✗ Quase lá";
     L.passos.push(Object.assign({}, p, {repetida:true}));
   }
   salvar();
   $("#fb-texto").textContent = p.e;
-  $("#fb-bt").textContent = L.vidas <= 0 ? "Ver o que aconteceu" : "Continuar";
+  const acabou = !L.revisao && vidasAgora() <= 0;
+  $("#fb-bt").textContent = acabou ? "Ver o que aconteceu" : "Continuar";
   requestAnimationFrame(() => fb.classList.add("on"));
 }
 
-function semFichas(){
+/** Tela de espera. Serve tanto pra quem zerou no meio quanto pra quem chegou
+    na lição já sem ficha nenhuma. */
+function telaSemFichas(titulo, texto){
+  $("#licao").classList.add("sem-fichas");
   $("#feedback").classList.remove("on", "bom", "ruim");
   $("#pg").style.width = "0%";
   $("#rodape").firstElementChild.innerHTML = "";
   $("#palco").innerHTML =
-    '<div class="fim"><img class="selo" alt="" src="assets/marca/dom-tira.png"><h2>Acabaram suas fichas</h2>' +
-    "<p>Sem drama: revisar é parte do jogo. Refaça a lição — o conteúdo é o mesmo, " +
-    "e da segunda vez ele gruda.</p>" +
-    '<button class="bt" id="denovo">Tentar de novo</button>' +
-    '<button class="bt fantasma" id="voltar" style="margin-top:10px">Voltar pra trilha</button></div>';
-  $("#denovo").addEventListener("click", () => abrirLicao(L.licao.id));
+    '<div class="fim"><img class="selo" alt="" src="assets/marca/dom-tira.png">' +
+    "<h2>" + titulo + "</h2><p>" + texto + "</p>" +
+    '<div class="contador"><span class="cap">Próxima ficha em</span>' +
+      '<b data-espera>' + formatarEspera(proximaVidaEm()) + "</b></div>" +
+    '<button class="bt" id="voltar">Voltar pra trilha</button></div>';
   $("#voltar").addEventListener("click", fecharLicao);
+  pintarFichas();
+}
+
+function semFichas(){
+  telaSemFichas("Acabaram suas fichas",
+    "Sem drama: revisar é parte do jogo. Uma ficha volta a cada 30 minutos — " +
+    "ou refaça uma lição já concluída, que não custa nada.");
 }
 
 function concluir(){
   const bonus = L.deprimeira * 2;
-  const ganho = 10 + bonus;
-  const nova = !S.feitas[L.licao.id];
+  const ganho = L.revisao ? 0 : 10 + bonus;
   marcarDia();            // antes de somar: virou o dia, o contador do dia zera
-  S.feitas[L.licao.id] = true;
-  S.xp += ganho;
-  S.xpHoje += ganho;
-  salvar();   // o topo é repintado por aoFechar() -> render()
+  if (!L.revisao){
+    S.feitas[L.licao.id] = true;
+    S.xp += ganho;
+    S.xpHoje += ganho;
+  }
+  salvar();
   $("#pg").style.width = "100%";
   $("#rodape").firstElementChild.innerHTML = "";
   $("#palco").innerHTML =
     '<div class="fim"><img class="selo" alt="" src="assets/marca/' +
       (L.errou ? "dom-pensa" : "dom-vibra") + '.png">' +
-    "<h2>" + (L.errou ? "Lição fechada!" : "Sem errar uma!") + "</h2>" +
-    "<p>" + L.licao.titulo + (nova ? " desbloqueou a próxima." : " revisada.") + "</p>" +
+    "<h2>" + (L.revisao ? "Revisão feita!" : (L.errou ? "Lição fechada!" : "Sem errar uma!")) + "</h2>" +
+    "<p>" + L.licao.titulo + (L.revisao ? " continua na ponta da língua." : " desbloqueou a próxima.") + "</p>" +
     '<div class="premios">' +
-      '<div class="premio"><span class="cap">XP ganho</span><b>+' + ganho + "</b></div>" +
+      '<div class="premio"><span class="cap">' + (L.revisao ? "Revisão" : "XP ganho") + "</span><b>" +
+        (L.revisao ? "grátis" : "+" + ganho) + "</b></div>" +
       '<div class="premio"><span class="cap">De primeira</span><b>' + L.deprimeira + "/" + L.total + "</b></div>" +
     "</div>" +
     '<button class="bt" id="segue">Continuar</button></div>';
   $("#segue").addEventListener("click", fecharLicao);
-  confete();
+  if (!L.revisao) confete();
 }

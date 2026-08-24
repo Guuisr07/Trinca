@@ -68,3 +68,28 @@ nós passam por baixo; o `.topo` some quando o trilho assume os números.
 
 Missão do dia usa `S.xpHoje` (state.js) contra `META_DIA` — 20 XP, cerca de
 uma lição. Zera na virada do dia, mesmo com a aba aberta.
+
+## Fichas e Trinca+
+
+Cinco fichas, do jogador e não da lição. Cada erro custa uma; uma volta a cada
+30 minutos. Zerou, lição nova espera — mas revisar lição já concluída continua
+liberado e de graça (não custa ficha, não paga XP).
+
+| Estado | Onde aparece |
+|---|---|
+| Lote e contador | topo da lição, cartão do trilho, `#s-fichas` no topo do app |
+| Lote zerado | aviso vermelho na trilha, CTA do destaque, rótulo do nó |
+| Espera | qualquer `[data-espera]` — o relógio de `fichas.js` preenche |
+
+**O relógio não é um timer.** `state.js` guarda `gastaEm`: o instante em que o
+lote deixou de estar cheio. Quantas fichas voltaram é conta de tempo decorrido,
+feita na leitura (`vidasAgora()`). Assim a recarga sobrevive a recarregar a
+página, fechar a aba e dormir a máquina — um `setInterval` não sobreviveria. O
+`setInterval` de `fichas.js` só pinta o contador na tela.
+
+Errar em sequência não reinicia a contagem: `gastaEm` só é marcado quando o
+lote sai do cheio. Sem isso, quem erra cinco vezes seguidas nunca recarregaria.
+
+**Trinca+** é hoje uma chave local (`S.vip`, botão no perfil): fichas
+ilimitadas, sem cobrança e sem conta. Vira checagem de assinatura quando existir
+login. O que ele remove — espera e limite — é o produto que se vende.

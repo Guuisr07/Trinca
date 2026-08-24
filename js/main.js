@@ -1,6 +1,7 @@
 /* Boot. Único arquivo que conhece a ordem de ligação dos módulos. */
 
 import { render, ligarNav } from "./telas.js";
+import { ligarRelogio } from "./fichas.js";
 import { ligarLicao } from "./licao.js";
 import { ligarLanding } from "./landing.js";
 import { ligarTema } from "./tema.js";
@@ -10,3 +11,4 @@ ligarNav();
 ligarLanding();
 ligarTema();
 render();
+ligarRelogio(render);   // ficha que recarrega repinta trilha, topo e trilho

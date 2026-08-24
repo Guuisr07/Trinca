@@ -26,6 +26,7 @@ function esconderLanding(){
   const tela = $("#inicio");
   tela.classList.add("saindo");
   document.body.style.overflow = "";
+  window.scrollTo(0, 0);          // senão o app abre na altura em que a landing parou
   // .intro cai junto: voltar pra landing não repete a animação de entrada
   setTimeout(() => { tela.classList.replace("saindo", "fora"); tela.classList.remove("intro"); }, 450);
 }

@@ -137,3 +137,15 @@
 .troca-tema[aria-checked="true"] .trilho{background:var(--azul-soft)}
 .troca-tema[aria-checked="true"] .botao{translate:20px 0}
 .troca-tema:active .botao{scale:.9}
+
+/* ---------- fichas na trilha ---------- */
+.aviso-fichas{display:flex;gap:12px;align-items:flex-start;margin-bottom:16px;padding:14px 16px;
+  border-radius:16px;background:var(--no-soft);border:1px solid color-mix(in srgb,var(--no) 35%,transparent)}
+.aviso-fichas > i{font-style:normal;font-size:20px;line-height:1.2}
+.aviso-fichas b{display:block;font-size:14.5px;margin-bottom:3px}
+.aviso-fichas span{display:block;font-size:13px;line-height:1.5;color:var(--muted)}
+.aviso-fichas span b{display:inline;color:var(--ink);font-variant-numeric:tabular-nums}
+.cartao-vip{background:linear-gradient(150deg,var(--brass-soft),var(--surface));
+  border:2px solid var(--brass);border-radius:16px;padding:16px}
+.cartao-vip b{display:block;font-family:var(--disp);font-size:18px;margin-bottom:5px}
+.cartao-vip p{margin:0 0 14px;font-size:13.5px;line-height:1.5;color:var(--muted)}
