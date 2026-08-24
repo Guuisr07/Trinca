@@ -19,7 +19,7 @@ export const TRILHAS = [
     q:[
       {p:"Quantas cartas tem o baralho do poker?", o:["52","48","54","40"], c:0, e:"52 cartas: 13 valores × 4 naipes. Sem coringa."},
       {p:"Qual naipe é o mais forte?", o:["Espadas","Copas","Nenhum, todos valem igual","Ouros"], c:2, e:"Naipe não desempata nada no Hold'em. Só serve pra formar flush."},
-      {p:"No baralho do Trinca, ouros (♦) aparece em qual cor?", o:["Vermelho","Azul","Verde","Cinza"], c:1, e:"Ouros é azul, copas é vermelho, paus é verde e espadas é cinza. Cor = naipe."},
+      {p:"No baralho do Trinca, ouros (♦) aparece em qual cor?", o:["Vermelho","Roxo","Verde","Azul-escuro"], c:1, e:"Ouros é roxo, copas é vermelho, paus é verde e espadas é azul-escuro. Cor = naipe."},
       {p:"Qual dessas cartas é a mais forte?", o:["Rei","Dama","Ás","Valete"], c:2, e:"Ás é a carta mais alta. Só na sequência A-2-3-4-5 ele conta como a mais baixa."},
       {p:"Cinco cartas do mesmo naipe formam:", o:["Um par","Um flush","Uma trinca","Uma quadra"], c:1, e:"Flush é cinco do mesmo naipe. É pra isso que naipe serve."},
       {p:"Você recebe K♠ e K♥. Isso é...", o:["Um par de reis","Um flush","Uma trinca","Nada"], c:0, e:"Duas cartas do mesmo valor = par. Par de reis é uma mão inicial fortíssima."},
@@ -137,5 +137,5 @@ export const TRILHAS = [
   ]
 },
 { id:"x", nome:"Pós-flop", icone:"♣", embreve:true,
-  desc:"Ler o flop, apostar por valor, blefar na hora certa e calcular odds. Abre quando você fechar as duas primeiras trilhas.", licoes:[] }
+  desc:"Ler o flop, apostar por valor, blefar na hora certa e calcular odds. As lições ainda estão sendo escritas.", licoes:[] }
 ];
