@@ -5,7 +5,7 @@ const CHAVE = "trinca.v1";
 
 /* Fábrica, não constante: um objeto literal compartilhado vazaria o
    mesmo `feitas` entre o padrão e o estado vivo. */
-const padrao = () => ({ xp:0, feitas:{}, acertos:0, erros:0, streak:1, dia:null });
+const padrao = () => ({ xp:0, xpHoje:0, feitas:{}, acertos:0, erros:0, streak:1, dia:null });
 
 function carregar(){
   try { return Object.assign(padrao(), JSON.parse(localStorage.getItem(CHAVE) || "{}")); }
@@ -31,4 +31,11 @@ export function marcarDia(){
   const ontem = new Date(Date.now() - 864e5).toDateString();
   S.streak = (S.dia === ontem) ? S.streak + 1 : 1;
   S.dia = hoje;
+  S.xpHoje = 0;
 }
+
+/** XP ganho hoje. Zera sozinho na virada do dia, mesmo com a aba aberta. */
+export const xpDeHoje = () => (S.dia === new Date().toDateString() ? S.xpHoje : 0);
+
+/** Meta diária da missão do trilho. */
+export const META_DIA = 20;

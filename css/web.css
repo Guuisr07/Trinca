@@ -1,0 +1,136 @@
+/* Camada web. O mobile continua sendo o que app.css define; daqui pra cima o
+   app vira três colunas: barra lateral, coluna de conteúdo e trilho de status.
+   Mesma ideia do Duolingo web — a nav sai de baixo e vira lateral persistente,
+   o conteúdo fica numa coluna de leitura e os números vão pro trilho da direita. */
+
+/* no mobile a lateral não existe: só a nav dela sobrevive, como barra inferior */
+.side{display:contents}
+.side-marca,.rail{display:none}
+
+/* ---------- 820px+: barra lateral ---------- */
+@media (min-width:820px){
+  .app{--sticky-top:0px;max-width:none;display:grid;justify-content:center;gap:0 26px;
+    grid-template-columns:222px minmax(0,600px);align-items:start;padding:0 22px}
+
+  .side{display:flex;flex-direction:column;gap:4px;position:sticky;top:0;
+    height:100vh;padding:22px 18px 18px 0;border-right:1px solid var(--line)}
+  .side-marca{display:block;padding:6px 10px 22px;text-align:left;border-radius:14px}
+  .side-marca img{height:32px;width:auto;display:block}
+  .side-marca:active{transform:scale(.97)}
+
+  /* a nav inferior vira lista vertical: mesma marcação, outra caixa */
+  .nav{position:static;flex-direction:column;gap:4px;background:none;border-top:0;
+    margin:0;box-shadow:none}
+  .nav button{flex:none;flex-direction:row;justify-content:flex-start;gap:12px;
+    padding:11px 14px;border-radius:14px;border:2px solid transparent;
+    font-size:12.5px;letter-spacing:.07em;text-transform:uppercase;
+    transition:background .15s ease}
+  .nav button span{font-size:22px;line-height:1}
+  .nav button.on{color:var(--ink);font-weight:700;border-color:var(--brass);
+    background:color-mix(in srgb,var(--brass) 18%,var(--surface))}
+  .nav .troca-tema{margin-top:auto;flex:none;flex-direction:row;justify-content:flex-start;
+    gap:12px;padding:11px 14px}
+
+  .col{min-width:0;padding-bottom:48px}
+  .topo{padding:20px 0 12px}
+  .topo .marca{display:none}          /* a marca agora mora na lateral */
+  .topo .stat{margin-left:auto}
+  .topo .stat + .stat{margin-left:0}
+  .faixa{padding:6px 0 24px}
+
+  /* cabeçalho da trilha gruda no topo enquanto os nós passam por baixo */
+  .cabecalho-trilha{position:sticky;top:var(--sticky-top);z-index:4}
+
+  /* a trilha é estreita demais pra 600px de coluna: abre o zigue-zague e
+     encurta o vão vertical, que numa tela alta vira rolagem à toa */
+  .desloc-1{transform:translateX(96px)} .desloc-2{transform:translateX(-96px)}
+  .desloc-3{transform:translateX(52px)} .desloc-4{transform:translateX(-52px)}
+  .trilha{gap:0}
+  .no{padding:2px 0}
+  .fio{height:16px}
+
+  /* o CTA do destaque não precisa de 600px de largura */
+  .destaque .bt{max-width:320px}
+  .destaque{padding:20px 22px 18px}
+
+  /* perfil e ranking ganham a coluna inteira */
+  .grade{grid-template-columns:repeat(4,1fr)}
+  .faixa .bt{max-width:320px}
+}
+
+/* ---------- 1120px+: trilho de status ---------- */
+@media (min-width:1120px){
+  .app{grid-template-columns:222px minmax(0,600px) 312px;gap:0 30px;--sticky-top:12px}
+  .topo{display:none}                 /* stats subiram pro trilho */
+  .metas{display:none}                /* idem — não repete no meio da trilha */
+  .faixa{padding-top:22px}
+  .rail{display:block;position:sticky;top:0;height:100vh;overflow-y:auto;
+    padding:20px 0 32px;scrollbar-width:thin}
+}
+
+/* ---------- peças do trilho ---------- */
+.rail-stats{display:flex;justify-content:flex-end;gap:16px;padding:0 4px 16px;
+  font-weight:700;font-size:15px;font-variant-numeric:tabular-nums}
+.rail-stats span{display:flex;align-items:center;gap:6px}
+.rail-stats i{font-style:normal;font-size:18px;line-height:1}
+
+.cartao{background:var(--surface);border:1px solid var(--line);border-radius:16px;
+  padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}
+.cartao-topo{display:flex;align-items:baseline;justify-content:space-between;
+  gap:10px;margin-bottom:12px}
+.cartao h3{font-size:16px;font-weight:800}
+.cartao .link{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--azul);padding:2px}
+.cartao .link:hover{text-decoration:underline}
+.missao{display:flex;align-items:center;gap:12px}
+.missao > i{font-style:normal;font-size:28px;line-height:1}
+.missao > div{flex:1;min-width:0}
+.missao b{display:block;font-size:14px;margin-bottom:6px}
+.missao .barra{margin-top:0}
+.missao .barra > i{background:var(--brass)}
+.missao small{display:block;margin-top:5px;color:var(--muted);font-size:11.5px;
+  font-variant-numeric:tabular-nums}
+.rail .linha{padding:8px 10px;gap:10px;margin-bottom:6px}
+.rail .linha .av{width:30px;height:30px;font-size:15px}
+.rail .linha .nm{font-size:13.5px}
+.rail .linha .xp{font-size:12.5px}
+.rail-rodape{padding:6px 6px 0;color:var(--muted);font-size:11px;line-height:1.7}
+
+/* ---------- lição no desktop ---------- */
+@media (min-width:820px){
+  /* uma coluna de 760px centrada; as barras fixas seguem de ponta a ponta,
+     só o conteúdo delas entra na mesma coluna (padding calculado) */
+  .licao-topo{width:100%;max-width:760px;margin:0 auto;padding:26px 20px 10px}
+  .palco{width:100%;max-width:760px;margin:0 auto;padding:20px 20px 40px;
+    display:flex;flex-direction:column;justify-content:center}
+  .rodape-fixo{background:linear-gradient(transparent,var(--bg) 40%)}
+  .rodape-fixo .interno{max-width:760px}
+  .rodape-fixo .interno .bt{max-width:300px;margin-left:auto}
+  .feedback{padding:22px max(20px,calc(50% - 380px)) 26px;
+    display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:24px}
+  .feedback .titulo{grid-column:1;margin-bottom:6px}
+  .feedback p{grid-column:1;grid-row:2;margin:0}
+  .feedback .bt{grid-column:2;grid-row:1/3;width:auto;min-width:240px;align-self:center}
+  /* número do atalho de teclado na quina da alternativa */
+  .opcoes{counter-reset:opc}
+  .opc{position:relative;counter-increment:opc;padding-left:46px}
+  .opc::before{content:counter(opc);position:absolute;left:14px;top:50%;translate:0 -50%;
+    width:22px;height:22px;border-radius:7px;border:1.5px solid var(--line);
+    display:grid;place-items:center;font-size:12px;font-weight:700;color:var(--muted)}
+  .opc.certa::before{border-color:var(--ok);color:var(--ok)}
+  .opc.errada::before{border-color:var(--no);color:var(--no)}
+  .opc .rot{margin-left:0}
+
+  /* alternativas em duas colunas: caem melhor numa linha larga */
+  .opcoes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .opcoes:has(.opc .rot){grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+}
+
+/* ---------- refinos de ponteiro fino ---------- */
+@media (hover:hover){
+  .bt:hover{filter:brightness(1.04)}
+  .nav button:hover{background:var(--surface-2)}
+  .linha:hover{border-color:color-mix(in srgb,var(--brass) 50%,var(--line))}
+  .no button:not(:disabled):hover .bolha{transform:translateY(-2px)}
+}
+:focus-visible{outline:3px solid var(--brass);outline-offset:3px;border-radius:6px}

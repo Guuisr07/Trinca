@@ -62,9 +62,35 @@ assert.ok(!await p.locator("#licao.on").count(), "não voltou pra trilha");
 
 // as outras abas e a volta pra landing entram na mesma varredura de erro
 for (const aba of ["ranking", "perfil", "trilha"]) await p.click(`[data-aba="${aba}"]`);
-await p.click("#ir-inicio");
+await p.locator(".ir-inicio:visible").first().click();   // topo no mobile, lateral no desktop
 await p.waitForTimeout(200);
 assert.ok(!await p.locator("#inicio.fora").count(), "botão da marca não voltou pra landing");
+
+/* Layout web: no viewport largo a nav é lateral e o trilho da direita aparece
+   com a missão do dia. Uma checagem só — o resto do CSS não é testável aqui. */
+await p.setViewportSize({ width:1280, height:800 });
+await p.locator("#entrar").click();
+assert.ok(await p.locator("#rail .missao").isVisible(), "trilho não apareceu no desktop");
+assert.ok((await p.locator(".side .nav").boundingBox()).height > 200, "nav não virou lateral");
+
+/* Teclado: número escolhe a alternativa e Enter avança. É o caminho do desktop
+   e não tem clique nenhum pra cobrir por acaso. */
+await p.locator(`[data-licao="${licao.id}"]`).click();
+for (let volta = 0; volta < 20; volta++){
+  if (await p.locator("#palco .opc").count()) break;
+  await p.keyboard.press("Enter");                 // telas de aula
+  await p.waitForTimeout(120);
+}
+await p.keyboard.press(String(gabarito[0] + 1));
+await p.waitForTimeout(120);
+assert.ok(await p.locator("#palco .opc.certa").count(), "tecla numérica não respondeu");
+p.once("dialog", d => d.accept());                 // Esc no meio da lição pergunta antes
+await p.keyboard.press("Escape");
+await p.waitForTimeout(300);
+assert.ok(!await p.locator("#licao.on").count(), "Esc não fechou a lição");
+
+await p.locator(".ir-inicio:visible").first().click();
+await p.waitForTimeout(200);
 
 /* A mesa da lição (.mesa, cartas.css) já foi sequestrada por uma classe de mesmo
    nome na landing: virou um feltro de 350px que empurrava as opções pra fora.

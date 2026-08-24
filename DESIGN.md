@@ -50,3 +50,21 @@ generoso (14–26px), botão que afunda no `:active`. Sem gradiente decorativo f
 do feltro do dealer e do fundo da capa.
 
 Regra que segura tudo: **cor fixa fora de token vira dívida na hora de virar o tema.**
+
+## Layout
+
+Duas formas do mesmo app, uma marcação só:
+
+| Largura | Forma |
+|---|---|
+| < 820px | coluna única de 520px, nav como barra inferior fixa |
+| ≥ 820px | barra lateral de 222px + coluna de conteúdo de 600px |
+| ≥ 1120px | + trilho de 312px à direita (stats, missão do dia, liga) |
+
+A transformação mora inteira em `css/web.css` — os outros arquivos descrevem o
+mobile. A `.nav` é a mesma marcação nos dois: barra inferior fixa embaixo,
+lista vertical na lateral. No desktop o cabeçalho da trilha gruda no topo e os
+nós passam por baixo; o `.topo` some quando o trilho assume os números.
+
+Missão do dia usa `S.xpHoje` (state.js) contra `META_DIA` — 20 XP, cerca de
+uma lição. Zera na virada do dia, mesmo com a aba aberta.

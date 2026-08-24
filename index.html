@@ -26,6 +26,7 @@
 <link rel="stylesheet" href="css/app.css">
 <link rel="stylesheet" href="css/licao.css">
 <link rel="stylesheet" href="css/landing.css">
+<link rel="stylesheet" href="css/web.css">
 <link rel="stylesheet" href="css/motion.css">
 </head>
 <body>
@@ -68,18 +69,29 @@
 </section>
 
 <div class="app" id="app">
-  <div class="topo">
-    <button class="marca" id="ir-inicio" aria-label="Voltar para a página inicial"><span class="chevron" aria-hidden="true">&larr;</span><img src="assets/marca/simbolo.png" alt="">Trinca</button>
-    <div class="stat" title="Dias seguidos"><span class="ico">&#128293;</span><span id="s-streak">1</span></div>
-    <div class="stat" title="Experiência"><span class="ico">&#127920;</span><span id="s-xp">0</span></div>
-  </div>
-  <div class="faixa" id="tela"></div>
-  <nav class="nav">
-    <button data-aba="trilha" class="on"><span>&#9824;</span>Trilha</button>
-    <button data-aba="ranking"><span>&#127942;</span>Ranking</button>
-    <button data-aba="perfil"><span>&#128100;</span>Perfil</button>
-    <button class="troca-tema" role="switch" aria-checked="false" aria-label="Mudar para o tema escuro"><span class="trilho"><span class="botao"></span></span><i aria-hidden="true">Tema</i></button>
-  </nav>
+  <!-- barra lateral: só no desktop. No mobile a .nav vira barra inferior fixa. -->
+  <aside class="side">
+    <button class="side-marca ir-inicio" aria-label="Voltar para a página inicial">
+      <img src="assets/marca/lockup.png" alt="Trinca"></button>
+    <nav class="nav">
+      <button data-aba="trilha" class="on"><span>&#9824;</span>Trilha</button>
+      <button data-aba="ranking"><span>&#127942;</span>Ranking</button>
+      <button data-aba="perfil"><span>&#128100;</span>Perfil</button>
+      <button class="troca-tema" role="switch" aria-checked="false" aria-label="Mudar para o tema escuro"><span class="trilho"><span class="botao"></span></span><i aria-hidden="true">Tema</i></button>
+    </nav>
+  </aside>
+
+  <main class="col">
+    <div class="topo">
+      <button class="marca ir-inicio" aria-label="Voltar para a página inicial"><span class="chevron" aria-hidden="true">&larr;</span><img src="assets/marca/simbolo.png" alt="">Trinca</button>
+      <div class="stat" title="Dias seguidos"><span class="ico">&#128293;</span><span id="s-streak">1</span></div>
+      <div class="stat" title="Experiência"><span class="ico">&#127920;</span><span id="s-xp">0</span></div>
+    </div>
+    <div class="faixa" id="tela"></div>
+  </main>
+
+  <!-- trilho de status: stats, missão do dia e liga. Só a partir de 1120px. -->
+  <aside class="rail" id="rail"></aside>
 </div>
 
 <div id="licao">

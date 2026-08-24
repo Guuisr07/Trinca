@@ -85,8 +85,11 @@
 .bloco-travado p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.5}
 
 /* ---------- nav ---------- */
-.nav{position:sticky;bottom:0;display:flex;background:var(--surface);
-  border-top:1px solid var(--line);margin-top:auto}
+/* No mobile é barra inferior fixa (a .side que a envolve some com display:contents);
+   no desktop web.css transforma essa mesma marcação em lista lateral. */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:6;display:flex;background:var(--surface);
+  border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+.col{display:flex;flex-direction:column;min-width:0;padding-bottom:78px}
 .nav button{flex:1;padding:11px 0 14px;display:flex;flex-direction:column;align-items:center;gap:3px;
   font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.02em}
 .nav button span{font-size:20px}

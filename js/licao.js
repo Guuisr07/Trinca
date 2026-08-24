@@ -26,6 +26,24 @@ export function ligarLicao(quandoFechar){
     if (L.vidas <= 0) return semFichas();
     L.i++; passo();
   });
+  document.addEventListener("keydown", tecla);
+}
+
+/* No desktop a lição se joga sem mouse: número escolhe, Enter avança, Esc sai.
+   O número é o mesmo que aparece na quina da opção (ver .opc::before). */
+function tecla(e){
+  if (!L || e.altKey || e.ctrlKey || e.metaKey) return;
+  if (e.key === "Escape") return $("#btn-sair").click();
+  if (e.key === "Enter" || e.key === " "){
+    const bt = $("#feedback").classList.contains("on")
+      ? $("#fb-bt") : $("#rodape").querySelector(".bt");
+    if (bt){ e.preventDefault(); bt.click(); }
+    return;
+  }
+  const n = Number(e.key);
+  if (!n || $("#feedback").classList.contains("on")) return;
+  const opc = $("#palco").querySelectorAll(".opc")[n - 1];
+  if (opc && !opc.disabled){ e.preventDefault(); opc.click(); }
 }
 
 export function abrirLicao(id){
@@ -132,9 +150,11 @@ function concluir(){
   const bonus = L.deprimeira * 2;
   const ganho = 10 + bonus;
   const nova = !S.feitas[L.licao.id];
+  marcarDia();            // antes de somar: virou o dia, o contador do dia zera
   S.feitas[L.licao.id] = true;
   S.xp += ganho;
-  marcarDia(); salvar();   // o topo é repintado por aoFechar() -> render()
+  S.xpHoje += ganho;
+  salvar();   // o topo é repintado por aoFechar() -> render()
   $("#pg").style.width = "100%";
   $("#rodape").firstElementChild.innerHTML = "";
   $("#palco").innerHTML =

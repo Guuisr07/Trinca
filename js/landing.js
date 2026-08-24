@@ -1,7 +1,7 @@
 /* Tela de entrada. Fica montada o tempo todo e alterna com .fora — o login vai
    morar aqui, então precisa dar pra voltar (botão da marca, no topo do app). */
 
-import { $ } from "./dom.js";
+import { $, $$ } from "./dom.js";
 import { S } from "./state.js";
 import { feitasCount, totalLicoes } from "./progresso.js";
 
@@ -62,5 +62,5 @@ export function ligarLanding(){
     ], {duration:550, easing:"cubic-bezier(.2,1.4,.4,1)"});
   });
   $("#entrar").addEventListener("click", esconderLanding);
-  $("#ir-inicio").addEventListener("click", mostrarLanding);
+  $$(".ir-inicio").forEach(b => b.addEventListener("click", mostrarLanding));
 }
