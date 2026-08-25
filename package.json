@@ -2,12 +2,29 @@
   "name": "trinca",
   "private": true,
   "type": "module",
-  "description": "Poker do zero. O app não tem dependência de runtime — playwright é só pros testes de browser.",
+  "description": "Poker do zero. Next + TS + Tailwind (ver ARQUITETURA.md). O app legado em HTML puro roda em paralelo ate o passo 5 da ADR-012.",
   "scripts": {
-    "dev": "node serve.mjs",
-    "test": "node tests/regras.test.js && node tests/fichas.test.mjs && node tests/licao.test.mjs && node tests/tema.test.mjs"
+    "dev": "next dev",
+    "dev:atual": "node serve.mjs",
+    "build": "next build",
+    "start": "next start",
+    "tipos": "tsc --noEmit",
+    "test": "node tests/dominio.test.mjs && node tests/regras.test.js && node tests/fichas.test.mjs && node tests/licao.test.mjs && node tests/tema.test.mjs",
+    "test:dominio": "node tests/dominio.test.mjs"
   },
   "devDependencies": {
-    "playwright": "1.62.1"
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^26.3.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "playwright": "1.62.1",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "lucide-react": "^1.34.0",
+    "next": "^16.3.2",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   }
 }

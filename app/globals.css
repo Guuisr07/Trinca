@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Tokens do Trinca — ADR-004.
+   Os valores vivem aqui, em :root e :root[data-tema="dark"], exatamente como
+   viviam em css/base.css. O @theme abaixo apenas ENSINA o Tailwind a gerar
+   utilitário em cima deles.
+
+   Regra que segura tudo: cor fora de token vira dívida na hora de virar o
+   tema. Em Tailwind isso significa `bg-brass`, nunca `bg-[#F5B82E]` e nunca
+   `text-yellow-400` — a paleta padrão do Tailwind não é a paleta do Trinca.
+   ============================================================ */
+
+:root {
+  --bg:#FAF3E6; --surface:#FFFFFF; --surface-2:#F3E9D7;
+  --ink:#241C4F; --muted:#6C6493; --line:#E7DAC3;
+  --brass:#F5B82E; --brass-ink:#3B2A05; --brass-soft:#FFF0CE;
+  --ok:#22B573; --ok-soft:#DDF7EA;
+  --no:#E8453F; --no-soft:#FDE2E0;
+  --azul:#5B3FA0; --azul-soft:#EBE4F8;
+  /* naipes: espadas, copas, ouros, paus */
+  --n-e:#241C4F; --n-c:#E8453F; --n-o:#5B3FA0; --n-p:#1E8A5B;
+  --carta-aro:0 0 0 0 transparent;
+  --capa-1:#FFFDF7; --capa-2:#F2E3C7;
+  --sombra-plana:0 2px 0 var(--line);
+  --sombra-brass:0 4px 0 color-mix(in srgb, var(--brass) 60%, #000);
+}
+
+:root[data-tema="dark"] {
+  --bg:#141024; --surface:#1E1838; --surface-2:#29224A;
+  --ink:#F7EFDF; --muted:#A79FC8; --line:#352C5C;
+  --brass:#F5B82E; --brass-ink:#2A1D03; --brass-soft:#4A3712;
+  --ok:#2ECC8B; --ok-soft:#173D33;
+  --no:#F4675F; --no-soft:#43201F;
+  --azul:#8E6FE0; --azul-soft:#2C2350;
+  /* naipe no escuro: mesma família, claro o bastante pra ler no fundo navy */
+  --n-e:#7B86C4; --n-c:#FF7A70; --n-o:#A98CF5; --n-p:#3ADFA0;
+  --carta-aro:inset 0 0 0 1.5px #ffffff2e;
+  --capa-1:#241C4F; --capa-2:#0D0A18;
+  --sombra-plana:0 2px 0 #00000059;
+}
+
+/* `inline` é o que faz o tema virar em tempo de execução: o utilitário emite
+   `var(--bg)` em vez do valor resolvido, então quem troca a cor é a cascata do
+   [data-tema] — não um segundo conjunto de classes. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-brass: var(--brass);
+  --color-brass-ink: var(--brass-ink);
+  --color-brass-soft: var(--brass-soft);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-no: var(--no);
+  --color-no-soft: var(--no-soft);
+  --color-azul: var(--azul);
+  --color-azul-soft: var(--azul-soft);
+  --color-naipe-e: var(--n-e);
+  --color-naipe-c: var(--n-c);
+  --color-naipe-o: var(--n-o);
+  --color-naipe-p: var(--n-p);
+
+  --font-disp: var(--fonte-disp), Georgia, serif;
+  --font-body: var(--fonte-body), system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Flat 2.0: sombra sólida deslocada, nunca blur. */
+  --shadow-plana: var(--sombra-plana);
+  --shadow-brass: var(--sombra-brass);
+
+  --radius-flat: 14px;
+  --radius-flat-lg: 26px;
+}
+
+/* O usuário escolhe o tema e a escolha manda. `prefers-color-scheme` só
+   decide o primeiro carregamento, no script inline do layout. */
+@custom-variant dark ([data-tema="dark"] &);
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    touch-action: manipulation; /* mata o zoom de duplo toque no mobile */
+  }
+  h1, h2, h3 {
+    font-family: var(--font-disp);
+    text-wrap: balance;
+    letter-spacing: -.02em;
+  }
+  /* Respeita quem pediu menos movimento. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+}
+
+/* Botão de ação: ouro, sombra sólida, afunda no :active. É a assinatura
+   visual do app — utilitário, não classe copiada em cada tela. */
+@utility bt-flat {
+  background: var(--brass);
+  color: var(--brass-ink);
+  font-weight: 700;
+  border-radius: var(--radius-flat);
+  box-shadow: var(--sombra-brass);
+  transition: transform .1s;
+  &:active { transform: translateY(4px); box-shadow: none; }
+}

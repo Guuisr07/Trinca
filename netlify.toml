@@ -1,4 +1,6 @@
 # Site estático: nada pra buildar, o próprio repositório é o que vai pro ar.
+# Continua apontando pro app legado de propósito — o corte pro Next é o passo 5
+# da ADR-012 em ARQUITETURA.md. Mexer aqui antes disso põe o andaime no ar.
 [build]
   publish = "."
 

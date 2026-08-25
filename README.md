@@ -1,15 +1,20 @@
 # Trinca
 
-Poker do zero em lições de 3 minutos. Sem build, sem framework, sem dependência —
-HTML + CSS + ES modules nativos.
+Poker do zero em lições de 3 minutos.
+
+> **Em migração.** O app está saindo de HTML + ES modules nativos para
+> Next + React + Tailwind. As duas versões convivem: o produto no ar ainda é o
+> HTML puro descrito abaixo, e o andaime novo roda em paralelo. O porquê de cada
+> decisão e a ordem dos passos estão em [`ARQUITETURA.md`](ARQUITETURA.md).
 
 ## Rodar
 
-Precisa de um servidor HTTP (ES modules não carregam via `file://`):
-
 ```bash
-node serve.mjs       # http://localhost:5173
+npm run dev          # http://localhost:3000 — o Next em construção
+npm run dev:atual    # http://localhost:5173 — o app no ar hoje, HTML puro
 ```
+
+O app atual precisa de um servidor HTTP (ES modules não carregam via `file://`):
 
 Abrir o `index.html` com duplo clique **não funciona**: o browser bloqueia
 `<script type="module">` em `file://` (origin null) e o app fica sem JS nenhum.
@@ -18,10 +23,13 @@ Abrir o `index.html` com duplo clique **não funciona**: o browser bloqueia
 
 ```bash
 npm install     # playwright — dependência de teste, o app não tem nenhuma
-npm run dev     # servidor local, precisa estar de pé
-npm test        # regras + lição de ponta a ponta + switch de tema
+npm run dev:atual  # os testes de browser batem no :5173, precisa estar de pé
+npm test        # domínio + regras + lição de ponta a ponta + switch de tema
+npm run test:dominio   # só o domínio puro — não precisa de servidor
 ```
 
+- `dominio.test.mjs` — fichas, XP, sequência de dias e progressão contra `lib/dominio/`.
+  Relógio é parâmetro, então a recarga de 30 min é testada sem esperar 30 min. Node puro.
 - `regras.test.js` — progressão e invariantes de conteúdo, entre elas a regra de que
   nenhuma pergunta cobra algo que ainda não foi ensinado. Node puro.
 - `licao.test.mjs` — joga uma lição inteira acertando tudo, depois erra até acabarem
@@ -31,7 +39,12 @@ npm test        # regras + lição de ponta a ponta + switch de tema
 ## Estrutura
 
 ```
-index.html          markup do app inteiro
+app/                Next em construção (ver ARQUITETURA.md)
+components/         componentes React
+lib/
+  tema.ts           chave trinca.tema, compartilhada com o app atual
+  dominio/          regras puras em TS: fichas, progresso, trilha (ADR-003)
+index.html          markup do app atual
 netlify.toml        deploy: publica a raiz, sem build
 serve.mjs           servidor estático local, zero dependência
 css/
