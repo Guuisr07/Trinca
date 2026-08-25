@@ -7,12 +7,13 @@ está em saber por que não fizemos do outro jeito.
 
 `DESIGN.md` manda no visual. Este arquivo manda na estrutura.
 
-**Status atual:** passos 1 e 2 da ADR-012 entregues em 24/08/2026 — andaime
-Next 16 + React 19 + TS strict + Tailwind v4 com os tokens do `DESIGN.md`, e o
-domínio (fichas, XP, sequência, progressão) portado pra `lib/dominio/` em TS
-puro. ADR-001 a ADR-005, ADR-010 e ADR-013 viraram decidido; o resto segue
-proposta. O app de verdade ainda é o HTML puro — roda em `npm run dev:atual`
-até o passo 5.
+**Status atual:** passos 1 a 3 da ADR-012 entregues em 24/08/2026 — andaime
+Next 16 + React 19 + TS strict + Tailwind v4 com os tokens do `DESIGN.md`,
+domínio em TS puro em `lib/dominio/`, e conteúdo com fonte única em
+`content/trilhas.ts`. Decididas: ADR-001 a ADR-005, ADR-007, ADR-010 e
+ADR-013. Seguem proposta: ADR-006 (Supabase), ADR-008 (sincronia), ADR-011
+(assinatura). O app de verdade ainda é o HTML puro — roda em
+`npm run dev:atual` até o passo 5.
 
 ---
 
@@ -188,10 +189,28 @@ Resumo: `lucide-react` pra interface, SVG próprio em `components/icons/` pra
 naipe, ficha e coroa. Emoji não renderiza igual entre sistemas, não aceita
 `currentColor` (logo não vira no tema escuro) e polui leitor de tela.
 
-Inventário atual a substituir: `js/telas.js` (7 ícones), `data/bots.js`
-(9 avatares), `data/trilhas.js` (6 ícones de trilha). Os `♠♥♦♣` de
-`data/trilhas.js` são **dado de carta**, continuam como caractere e viram
-`<Naipe />` só na renderização.
+Feito no conteúdo (passo 3): os 7 emoji de lição viraram nome de ícone lucide
+(`icone: "Crown"`), e o naipe da trilha virou `naipe: "e" | "c" | "o" | "p"`,
+desenhado por `components/icons/Naipe.tsx`. Falta `js/telas.js` (7 ícones de
+interface) e `data/bots.js` (9 avatares), que saem com as telas no passo 4.
+
+**O mapa de ícones é explícito.** `components/Icone.tsx` importa por nome e
+resolve num `Record<NomeIcone, LucideIcon>`. `import * as lucide` resolveria
+qualquer nome, mas nome montado em tempo de execução não é tree-shakeable e
+empacotaria os mais de mil ícones da biblioteca. A lista de nomes mora em
+`lib/icones.ts` (sem JSX) pra que o teste consiga importar — Node roda `.ts`,
+não `.tsx`.
+
+### O que ♠♥♦♣ ensinaram
+
+O teste de conteúdo pegou 18 ocorrências e acusou como emoji. São **dado de
+carta**, inclusive dentro de frase ("Você recebe K♠ e K♥") — não saem do texto.
+
+Mas o Unicode os classifica como pictográficos, e o browser pode escolher a
+arte colorida do sistema: a mesma falha que a regra ataca, só que por outra
+porta. Foge de token, ignora o baralho de 4 cores e muda de forma por sistema
+operacional. A trava é CSS, não conteúdo: `font-variant-emoji: text` no `body`.
+A varredura do teste isenta a faixa de naipes e continua barrando o resto.
 
 ---
 
@@ -225,28 +244,47 @@ migration, nunca depois.
 
 ## ADR-007 — Conteúdo mora no repositório, não em CMS
 
-*24/08/2026 — proposta*
+*24/08/2026 — decidido*
 
-Trilha e lição continuam sendo arquivo versionado, agora em
-`content/trilhas/*.ts` com esquema Zod. Não vai pro banco e não vai pra CMS.
+Trilha e lição continuam sendo arquivo versionado, agora em `content/trilhas.ts`
+tipado por `satisfies Trilha[]`. Não vai pro banco e não vai pra CMS.
 
 Por quê:
 
 - Conteúdo é o produto. Revisar lição em pull request é revisão de verdade; em
   painel de CMS é ninguém revisando
-- Zod pega lição quebrada no build, não em produção
+- `satisfies` pega lição fora do formato no build, não em produção
 - Uma pessoa escreve o conteúdo. CMS existe pra quem não mexe em código
-
-O que **precisa** existir desde já:
-
-```ts
-{ id: "preflop-01", versao: 2, ... }   // id estável, nunca posição na lista
-```
 
 **Progresso salvo por `id`, jamais por índice.** Se `feitas` guardar posição,
 inserir uma lição no meio da trilha reescreve o histórico de todo mundo. Esse é
-o bug caro que só aparece depois de ter usuário. `data/trilhas.js` hoje tem
-~141 linhas e ainda dá pra corrigir de graça.
+o bug caro que só aparece depois de ter usuário — corrigido enquanto ainda
+custava zero. Cada lição carrega `versao`, que sobe quando o conteúdo muda a
+ponto de valer a pena rever.
+
+### Zod ficou de fora
+
+A proposta original pedia Zod. Na hora de escrever, não se pagou: o TypeScript
+já garante a forma, e o que sobra são regras semânticas (`c` dentro do range,
+alternativa de mão sem `t:"mao"`, ícone não registrado, pergunta cobrando aula
+que ainda não veio) que estão em `tests/conteudo.test.mjs` — onde erram de
+graça, sem dependência nova e sem custo de bundle.
+
+Zod entra no dia em que conteúdo vier de fora do repositório: import de
+planilha, CMS, ou banco. Aí a validação em tempo de execução vale o peso.
+Enquanto a origem for arquivo versionado, validar em runtime é conferir se o
+compilador funcionou.
+
+### Fonte única enquanto o legado vive
+
+`data/trilhas.js` deixou de ser fonte e virou artefato: `node
+tools/gerar-trilhas.mjs` o escreve a partir de `content/trilhas.ts`, traduzindo
+o nome do ícone lucide de volta pro emoji que o app legado desenha. O teste de
+conteúdo falha se os dois divergirem.
+
+A alternativa era manter as duas cópias na mão — e conteúdo é a prioridade
+número um da estratégia, então as duas divergiriam na primeira semana. O
+gerador e o `data/trilhas.js` somem juntos no passo 5.
 
 Quando as trilhas passarem de ~50 lições, carregar por trilha em vez de tudo de
 uma vez — mas só quando doer.
@@ -390,8 +428,11 @@ Sem big bang. Cada passo entrega app funcionando.
    estado novo em vez de mutação. `tests/dominio.test.mjs` cobre as mesmas
    invariantes contra o código novo, e os 4 testes do legado seguem passando —
    5 no total. As trilhas entram por parâmetro, então o passo 3 não mexe aqui
-3. **Conteúdo** — `data/trilhas.js` vira `content/` com Zod e `id` estável
-   (ADR-007). Aqui os emoji de ícone morrem (ADR-005)
+3. ~~**Conteúdo**~~ — **feito em 24/08/2026.** `content/trilhas.ts` é a fonte,
+   tipada por `satisfies Trilha[]`, com `id` estável e `versao`. Zod ficou de
+   fora (ADR-007). Emoji de lição virou nome de ícone lucide e naipe de trilha
+   virou `<Naipe />` (ADR-005). `data/trilhas.js` virou artefato gerado, e o
+   teste falha se sair de sincronia
 4. **Telas** — trilha, lição, ranking, perfil. Uma por vez, com Playwright
    comparando com o app atual
 5. **Corte** — Netlify aponta pro Next. `index.html`, `js/`, `css/`,

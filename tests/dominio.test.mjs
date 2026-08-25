@@ -6,11 +6,14 @@
    fichas.test.mjs e regras.test.js cobrem no app legado, cobertas aqui contra
    o código novo. Enquanto os dois passarem, o port está fiel.
 
+   O conteúdo em si é assunto de tests/conteudo.test.mjs — aqui ele entra só
+   como insumo das regras de progressão.
+
    Node 24 executa .ts direto (type stripping) — nenhum passo de build.
    Rodar:  node tests/dominio.test.mjs */
 
 import assert from "node:assert/strict";
-import { TRILHAS } from "../data/trilhas.js";
+import { TRILHAS } from "../content/trilhas.ts";
 import {
   MAX_FICHAS,
   RECARGA_MS,
@@ -176,35 +179,19 @@ assert.equal(formatarEspera(64 * 60000), "1h04");
   );
 }
 
-/* ---------- conteúdo ---------- */
+/* ---------- consultas da trilha ---------- */
 {
   const ordem = todasLicoes(TRILHAS);
   assert.equal(totalLicoes(TRILHAS), ordem.length, "o total bate com a lista");
   assert.equal(acharLicao(TRILHAS, "f1")?.id, "f1", "acha lição por id");
   assert.equal(acharLicao(TRILHAS, "naoexiste"), null, "id inexistente devolve null");
-
   for (const l of ordem) {
-    assert.ok(l.aula.length >= 3, `lição rasa demais: ${l.id}`);
-    assert.ok(xpPossivel(l) >= 10, `lição sem XP possível: ${l.id}`);
-    for (const q of l.q) {
-      assert.notEqual(q.o[q.c], undefined, `resposta correta fora do range em ${l.id}`);
-    }
+    assert.equal(xpPossivel(l), 10 + l.q.length * 2, `XP possível errado em ${l.id}`);
   }
-
-  /* Nenhuma pergunta pode cobrar conteúdo que ainda não foi ensinado. */
-  const ensinaMesa = ordem.findIndex((l) => /comunitárias/.test(JSON.stringify(l.aula)));
-  assert.ok(ensinaMesa >= 0, "nenhuma lição ensina as cartas comunitárias");
-  ordem.forEach((l, i) => {
-    for (const q of l.q) {
-      assert.ok(
-        !(q.board || q.t === "mao") || i >= ensinaMesa,
-        `pergunta usa a mesa antes da aula que a ensina: ${l.id}`,
-      );
-    }
-  });
-
-  console.log(
-    `ok — domínio: ${ordem.length} lições, ` +
-      `${ordem.reduce((n, l) => n + l.q.length, 0)} perguntas, fichas, XP e sequência`,
-  );
 }
+
+const licoes = TRILHAS.flatMap((t) => t.licoes);
+console.log(
+  `ok — domínio: fichas, XP, sequência e progressão em ` +
+    `${TRILHAS.length} trilhas / ${licoes.length} lições`,
+);

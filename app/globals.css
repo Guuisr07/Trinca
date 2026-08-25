@@ -94,6 +94,10 @@
     text-wrap: balance;
     letter-spacing: -.02em;
   }
+  /* ♠♥♦♣ dentro do texto são dado de carta, não emoji (ADR-005). Sem isto o
+     browser pode escolher a arte colorida do sistema, que ignora a cor do
+     naipe e destoa do baralho de 4 cores. */
+  body { font-variant-emoji: text; }
   /* Respeita quem pediu menos movimento. */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }

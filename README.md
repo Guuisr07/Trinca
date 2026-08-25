@@ -24,12 +24,14 @@ Abrir o `index.html` com duplo clique **não funciona**: o browser bloqueia
 ```bash
 npm install     # playwright — dependência de teste, o app não tem nenhuma
 npm run dev:atual  # os testes de browser batem no :5173, precisa estar de pé
-npm test        # domínio + regras + lição de ponta a ponta + switch de tema
-npm run test:dominio   # só o domínio puro — não precisa de servidor
+npm test        # domínio + conteúdo + regras + lição de ponta a ponta + tema
+npm run test:dominio   # domínio + conteúdo — não precisa de servidor
 ```
 
 - `dominio.test.mjs` — fichas, XP, sequência de dias e progressão contra `lib/dominio/`.
   Relógio é parâmetro, então a recarga de 30 min é testada sem esperar 30 min. Node puro.
+- `conteudo.test.mjs` — id estável e único, resposta dentro do range, ícone registrado,
+  nada de emoji, e data/trilhas.js em dia com content/trilhas.ts.
 - `regras.test.js` — progressão e invariantes de conteúdo, entre elas a regra de que
   nenhuma pergunta cobra algo que ainda não foi ensinado. Node puro.
 - `licao.test.mjs` — joga uma lição inteira acertando tudo, depois erra até acabarem
@@ -41,8 +43,11 @@ npm run test:dominio   # só o domínio puro — não precisa de servidor
 ```
 app/                Next em construção (ver ARQUITETURA.md)
 components/         componentes React
+content/
+  trilhas.ts        FONTE do conteúdo — lição nova entra aqui (ADR-007)
 lib/
   tema.ts           chave trinca.tema, compartilhada com o app atual
+  icones.ts         nomes de ícone que o app empacota (ADR-005)
   dominio/          regras puras em TS: fichas, progresso, trilha (ADR-003)
 index.html          markup do app atual
 netlify.toml        deploy: publica a raiz, sem build
@@ -61,7 +66,7 @@ assets/
 tools/
   cortar-logo.mjs   recorta a folha em PNGs com fundo transparente
 data/
-  trilhas.js        todo o conteúdo das lições — só dados
+  trilhas.js        GERADO de content/trilhas.ts — não editar (npm run conteudo)
   bots.js           oponentes do ranking
 js/
   main.js           boot: liga os módulos nesta ordem e só

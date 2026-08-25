@@ -9,8 +9,9 @@
     "build": "next build",
     "start": "next start",
     "tipos": "tsc --noEmit",
-    "test": "node tests/dominio.test.mjs && node tests/regras.test.js && node tests/fichas.test.mjs && node tests/licao.test.mjs && node tests/tema.test.mjs",
-    "test:dominio": "node tests/dominio.test.mjs"
+    "test": "node tests/dominio.test.mjs && node tests/conteudo.test.mjs && node tests/regras.test.js && node tests/fichas.test.mjs && node tests/licao.test.mjs && node tests/tema.test.mjs",
+    "test:dominio": "node tests/dominio.test.mjs && node tests/conteudo.test.mjs",
+    "conteudo": "node tools/gerar-trilhas.mjs"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",

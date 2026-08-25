@@ -20,30 +20,54 @@ export interface Progresso {
   vip: boolean;
 }
 
-/* Conteúdo. Tipagem mínima de propósito: o esquema de verdade (Zod, id
-   estável, versão) é o passo 3 da ADR-012. */
+/* Conteúdo (ADR-007). O conteúdo em si mora em `content/`, tipado por estas
+   interfaces — `satisfies Trilha[]` lá quebra o build se uma lição sair do
+   formato. Sem validação em tempo de execução: o dado vem do repositório,
+   não da rede. */
+
+/** Naipe: espadas, copas, ouros, paus. */
+export type Naipe = "e" | "c" | "o" | "p";
+
+/** Carta como dado: valor + símbolo do naipe, ex. `"A♠"`. O símbolo é chave,
+    não ícone — quem desenha é `<Naipe />` (ADR-005). */
+export type Carta = string;
+
+/** Um passo da aula. Texto sempre; carta, tabela de naipes e lista, conforme. */
+export interface PassoAula {
+  h: string;
+  p?: string;
+  cartas?: Carta[];
+  naipes?: boolean;
+  lista?: string[];
+}
 
 export interface Pergunta {
   p: string;
-  o: string[];
+  /** Alternativas. Texto, ou mãos de cartas quando `t === "mao"`. */
+  o: string[] | Carta[][];
+  /** Índice da alternativa correta em `o`. */
   c: number;
   e: string;
   t?: "mao";
-  board?: string[];
+  board?: Carta[];
 }
 
 export interface Licao {
+  /** Estável e único pra sempre — o progresso é gravado por ele. */
   id: string;
+  /** Sobe quando o conteúdo muda a ponto de valer a pena rever. */
+  versao: number;
   titulo: string;
+  /** Nome do ícone lucide, resolvido no render. Nunca emoji (ADR-005). */
   icone: string;
-  aula: unknown[];
+  aula: PassoAula[];
   q: Pergunta[];
 }
 
 export interface Trilha {
   id: string;
   nome: string;
-  icone: string;
+  naipe: Naipe;
   desc: string;
   licoes: Licao[];
   embreve?: boolean;

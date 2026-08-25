@@ -1,11 +1,13 @@
-import { Flame, Lock, Map, Target, Trophy, Zap } from "lucide-react";
+import { Icone } from "@/components/Icone";
+import { Naipe } from "@/components/icons/Naipe";
 import { TrocaTema } from "@/components/TrocaTema";
+import { TRILHAS } from "@/content/trilhas.ts";
 import { MAX_FICHAS, RECARGA_MS, formatarEspera, gastarFicha } from "@/lib/dominio/fichas.ts";
 import { progressoPadrao } from "@/lib/dominio/progresso.ts";
 
-/* Passo 1 da ADR-012: o andaime. Esta página não é produto — é a prova de que
-   token, tema, tipografia e ícone estão de pé. Sai no passo 4, quando as telas
-   de verdade chegarem. */
+/* Andaime dos passos 1 a 3 da ADR-012. Esta página não é produto — é a prova
+   de que token, tema, tipografia, ícone, domínio e conteúdo estão de pé. Sai
+   no passo 4, quando as telas de verdade chegarem. */
 
 /* Classe escrita por extenso de propósito: o Tailwind lê o código-fonte como
    texto, então `bg-${nome}` não gera nada. Interpolar classe é o erro clássico. */
@@ -23,20 +25,10 @@ const CORES = [
 ] as const;
 
 const NAIPES = [
-  ["bg-naipe-e", "espadas"],
-  ["bg-naipe-c", "copas"],
-  ["bg-naipe-o", "ouros"],
-  ["bg-naipe-p", "paus"],
-] as const;
-
-/* Ícone entra por nome, nunca por emoji (ADR-005). */
-const ICONES = [
-  [Flame, "sequência"],
-  [Target, "XP"],
-  [Map, "progresso"],
-  [Zap, "ficha"],
-  [Lock, "lição travada"],
-  [Trophy, "liga"],
+  ["e", "espadas"],
+  ["c", "copas"],
+  ["o", "ouros"],
+  ["p", "paus"],
 ] as const;
 
 export default function Andaime() {
@@ -45,7 +37,7 @@ export default function Andaime() {
       <header className="mb-10 flex items-center justify-between gap-4">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[.14em] text-muted">
-            Passo 1 · andaime
+            Passo 3 · andaime
           </p>
           <h1 className="text-3xl font-extrabold">Trinca</h1>
         </div>
@@ -69,27 +61,43 @@ export default function Andaime() {
         </div>
       </Bloco>
 
-      <Bloco titulo="Naipes">
+      <Bloco titulo="Naipes — SVG, cor por token">
         <div className="flex gap-2">
-          {NAIPES.map(([classe, papel]) => (
+          {NAIPES.map(([tipo, papel]) => (
             <div
-              key={papel}
+              key={tipo}
               className="flex-1 rounded-flat border-2 border-line p-3 text-center"
             >
-              <span className={`mx-auto block size-6 rounded-full ${classe}`} />
+              <Naipe tipo={tipo} className="mx-auto size-7" />
               <span className="mt-2 block text-xs text-muted">{papel}</span>
             </div>
           ))}
         </div>
       </Bloco>
 
-      <Bloco titulo="Ícones — SVG, nunca emoji">
-        <div className="flex flex-wrap gap-4">
-          {ICONES.map(([Icone, papel]) => (
-            <span key={papel} className="flex items-center gap-2 text-muted">
-              <Icone className="size-5" aria-hidden />
-              <span className="text-sm">{papel}</span>
-            </span>
+      <Bloco titulo="Trilhas — ícone vem do conteúdo, por nome">
+        <div className="space-y-2">
+          {TRILHAS.map((trilha) => (
+            <div key={trilha.id} className="rounded-flat border-2 border-line p-3">
+              <p className="flex items-center gap-2 font-semibold">
+                <Naipe tipo={trilha.naipe} className="size-5" />
+                {trilha.nome}
+                {trilha.embreve && (
+                  <span className="text-xs font-normal text-muted">em breve</span>
+                )}
+              </p>
+              {trilha.licoes.length > 0 && (
+                <ul className="mt-2 space-y-1">
+                  {trilha.licoes.map((licao) => (
+                    <li key={licao.id} className="flex items-center gap-2 text-sm text-muted">
+                      <Icone nome={licao.icone} className="size-4" />
+                      {licao.titulo}
+                      <code className="text-xs opacity-60">{licao.id}</code>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           ))}
         </div>
       </Bloco>
@@ -112,7 +120,7 @@ export default function Andaime() {
       </Bloco>
 
       <p className="mt-10 text-sm text-muted">
-        App atual segue rodando em <code>npm run dev:legacy</code>.
+        App atual segue rodando em <code>npm run dev:atual</code>.
       </p>
     </main>
   );
