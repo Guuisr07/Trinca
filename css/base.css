@@ -31,7 +31,8 @@
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);
-  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  touch-action:manipulation} /* mata o zoom de duplo toque no mobile */
 button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 h1,h2,h3{font-family:var(--disp);text-wrap:balance;margin:0;letter-spacing:-.02em}
 
