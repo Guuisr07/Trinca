@@ -1,8 +1,13 @@
 /* Shell do app logado: topo, trilha, ranking, perfil e nav inferior. */
-.app{max-width:520px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+/* --sticky-top = altura do .topo: e embaixo dele que o cabecalho da trilha gruda */
+.app{max-width:520px;--sticky-top:62px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
 /* ---------- topo ---------- */
 .topo{position:sticky;top:0;z-index:5;background:var(--bg);
   display:flex;align-items:center;gap:14px;padding:16px 18px 12px}
+/* o conteudo rola por baixo do topo: sem isso a linha some cortada ao meio.
+   O degrade dissolve o que entra embaixo da barra em vez de fatiar. */
+.topo::after{content:"";position:absolute;left:0;right:0;top:100%;height:16px;
+  background:linear-gradient(var(--bg),transparent);pointer-events:none}
 /* a marca é o caminho de volta pra landing (onde o login vai morar) */
 .marca{font-family:var(--disp);font-weight:800;font-size:22px;letter-spacing:-.03em;
   display:flex;align-items:center;gap:5px;margin-right:auto;
@@ -38,7 +43,7 @@
 .meta b{display:block;font-family:var(--disp);font-size:17px;font-variant-numeric:tabular-nums}
 .meta small{color:var(--muted);font-size:10.5px;letter-spacing:.03em}
 
-.cabecalho-trilha{position:relative;overflow:hidden;background:var(--surface);
+.cabecalho-trilha{position:sticky;top:var(--sticky-top);z-index:4;overflow:hidden;background:var(--surface);
   border:1px solid var(--line);border-radius:18px;
   padding:16px 18px;margin-bottom:26px;box-shadow:var(--shadow)}
 .cabecalho-trilha .naipe-marca{position:absolute;right:-10px;top:-26px;font-size:104px;line-height:1;
