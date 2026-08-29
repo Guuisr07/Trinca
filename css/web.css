@@ -9,7 +9,8 @@
 
 /* ---------- 820px+: barra lateral ---------- */
 @media (min-width:820px){
-  .app{--sticky-top:0px;max-width:none;display:grid;justify-content:center;gap:0 26px;
+  /* --sticky-top = altura do .topo: e embaixo dele que o cabecalho da trilha gruda */
+  .app{--sticky-top:51px;max-width:none;display:grid;justify-content:center;gap:0 26px;
     grid-template-columns:222px minmax(0,600px);align-items:start;padding:0 22px}
 
   .side{display:flex;flex-direction:column;gap:4px;position:sticky;top:0;
@@ -33,13 +34,12 @@
 
   .col{min-width:0;padding-bottom:48px}
   .topo{padding:20px 0 12px}
+  .topo::after{display:none}   /* aqui o cabecalho gruda logo abaixo, sem fatiar */
   .topo .marca{display:none}          /* a marca agora mora na lateral */
   .topo .stat{margin-left:auto}
   .topo .stat + .stat{margin-left:0}
   .faixa{padding:6px 0 24px}
 
-  /* cabeçalho da trilha gruda no topo enquanto os nós passam por baixo */
-  .cabecalho-trilha{position:sticky;top:var(--sticky-top);z-index:4}
 
   /* a trilha é estreita demais pra 600px de coluna: abre o zigue-zague e
      encurta o vão vertical, que numa tela alta vira rolagem à toa */
