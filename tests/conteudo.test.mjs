@@ -13,7 +13,7 @@ import { readFileSync } from "node:fs";
 import { TRILHAS } from "../content/trilhas.ts";
 import { MAOS } from "../content/maos.ts";
 import { NOMES_ICONE } from "../lib/icones.ts";
-import { gerar, gerarMaos } from "../tools/gerar-trilhas.mjs";
+import { foraDeSincronia } from "../tools/gerar-trilhas.mjs";
 
 const licoes = TRILHAS.flatMap((t) => t.licoes);
 
@@ -119,15 +119,13 @@ for (const l of licoes) {
 
 /* ---------- o legado segue em dia ---------- */
 {
-  for (const [arquivo, monta] of [["trilhas", gerar], ["maos", gerarMaos]]) {
-    const emDisco = readFileSync(new URL(`../data/${arquivo}.js`, import.meta.url), "utf8");
-    assert.equal(
-      emDisco,
-      monta(),
-      `data/${arquivo}.js está fora de sincronia com content/${arquivo}.ts — ` +
-        "rode `node tools/gerar-trilhas.mjs`",
-    );
-  }
+  const atrasados = foraDeSincronia();
+  assert.deepEqual(
+    atrasados,
+    [],
+    `gerado fora de sincronia com content/: ${atrasados.join(", ")} — ` +
+      "rode: node tools/gerar-trilhas.mjs",
+  );
 }
 
 console.log(

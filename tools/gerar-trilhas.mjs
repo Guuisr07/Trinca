@@ -73,15 +73,23 @@ const SAIDAS = [
   [DESTINO_MAOS, gerarMaos],
 ];
 
-export function conferir() {
-  return SAIDAS.every(([alvo, monta]) => readFileSync(alvo, "utf8") === monta());
+/* Quebra de linha não conta: o git desta máquina faz checkout em CRLF
+   (core.autocrlf) e o arquivo sai daqui em LF. Comparar cru acusava
+   dessincronia depois de todo `git checkout`, com o conteúdo idêntico. */
+const semCR = (t) => t.replace(/\r\n/g, "\n");
+
+/** Nomes dos arquivos gerados que estão fora de sincronia com content/. */
+export function foraDeSincronia() {
+  return SAIDAS
+    .filter(([alvo, monta]) => semCR(readFileSync(alvo, "utf8")) !== semCR(monta()))
+    .map(([alvo]) => alvo);
 }
 
 /* Só age quando chamado na linha de comando. Importar este módulo não pode
    escrever em disco — o teste de conteúdo importa `gerar()` pra comparar. */
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   if (process.argv.includes("--conferir")) {
-    if (!conferir()) {
+    if (foraDeSincronia().length) {
       console.error("data/ está fora de sincronia com content/.");
       console.error("Rode: node tools/gerar-trilhas.mjs");
       process.exit(1);
