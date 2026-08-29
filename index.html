@@ -17,6 +17,8 @@
   try { document.documentElement.dataset.tema = localStorage.getItem("trinca.tema") ||
     (matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light"); }
   catch { document.documentElement.dataset.tema = "light"; }
+  try { document.documentElement.dataset.baralho = localStorage.getItem("trinca.baralho") || "cheio"; }
+  catch { document.documentElement.dataset.baralho = "cheio"; }
 </script>
 
 <link rel="icon" href="assets/marca/simbolo.png">
