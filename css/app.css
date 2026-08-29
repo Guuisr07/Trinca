@@ -149,3 +149,20 @@
   border:2px solid var(--brass);border-radius:16px;padding:16px}
 .cartao-vip b{display:block;font-family:var(--disp);font-size:18px;margin-bottom:5px}
 .cartao-vip p{margin:0 0 14px;font-size:13.5px;line-height:1.5;color:var(--muted)}
+
+/* ---------- ranking das mãos (aba de consulta) ---------- */
+.nav button span svg{display:block;width:20px;height:20px}
+.mao-linha{display:flex;align-items:center;gap:13px;padding:12px 14px;background:var(--surface);
+  border:1px solid var(--line);border-radius:14px;margin-bottom:8px}
+.mao-linha .pos{width:22px;flex:none;font-weight:700;font-variant-numeric:tabular-nums;color:var(--muted)}
+.mao-linha .mao-info{flex:1;min-width:0}
+.mao-linha .mao-info b{display:block;font-size:14.5px}
+.mao-linha .mao-info small{color:var(--muted);font-size:12.5px;line-height:1.35;display:block}
+/* a mão fica à direita e não encolhe: é o que a pessoa vem conferir */
+.mao-linha .mao{flex:none;gap:4px}
+/* na mesa de verdade se olha de relance — sem animação de virada aqui */
+.mao-linha .carta{animation:none}
+@media (max-width:420px){
+  .mao-linha{flex-wrap:wrap}
+  .mao-linha .mao{width:100%;justify-content:flex-start;padding-left:35px}
+}
