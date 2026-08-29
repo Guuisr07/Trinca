@@ -1,8 +1,9 @@
 /* Regras de progressão da trilha: o que está aberto, quanto vale, onde parou.
 
-   As trilhas entram por parâmetro em vez de serem importadas: o conteúdo
-   ainda é `data/trilhas.js` e vira `content/` no passo 3 da ADR-012. Domínio
-   que não conhece a origem do conteúdo não precisa mudar quando ela muda. */
+   As trilhas entram por parâmetro em vez de serem importadas de `content/`.
+   Domínio que não conhece a origem do conteúdo não precisou mudar uma linha
+   quando a fonte trocou no passo 3 — e não vai mudar se um dia ela virar
+   banco. Também é o que deixa o teste passar trilha de mentira. */
 
 import { feita } from "./progresso.ts";
 import type { Licao, Progresso, Trilha } from "./tipos.ts";
