@@ -3,6 +3,8 @@
 
 import { $, $$ } from "./dom.js";
 import { TRILHAS } from "../data/trilhas.js";
+import { MAOS } from "../data/maos.js";
+import { mao } from "./cartas.js";
 import { BOTS } from "../data/bots.js";
 import { S, salvar, zerar, xpDeHoje, META_DIA, MAX_VIDAS, vidasAgora,
          proximaVidaEm, formatarEspera } from "./state.js";
@@ -22,6 +24,7 @@ export function render(){
   pintarTopo();
   pintarRail();
   if (aba === "trilha") telaTrilha();
+  else if (aba === "maos") telaMaos();
   else if (aba === "ranking") telaRanking();
   else telaPerfil();
 }
@@ -180,6 +183,20 @@ function telaTrilha(){
   $("#tela").querySelectorAll("[data-licao]").forEach(b =>
     b.addEventListener("click", () => abrirLicao(b.dataset.licao)));
   pintarEsperas();
+}
+
+/* Consulta rápida: a escada de força inteira, da mais fraca pra mais forte.
+   Não é lição — é a cola que a pessoa abre no meio de uma mesa presencial,
+   por isso vive em aba própria e não custa ficha nem mexe no progresso. */
+function telaMaos(){
+  $("#tela").innerHTML =
+    '<div class="liga"><h2>Ranking das mãos</h2>' +
+    "<p>Da mais fraca (1) pra mais forte (" + MAOS.length + "). Quanto mais rara " +
+    "a combinação, mais forte a mão.</p></div>" +
+    MAOS.map((m, i) =>
+      '<div class="mao-linha"><div class="pos">' + (i + 1) + "</div>" +
+      '<div class="mao-info"><b>' + m.nome + "</b><small>" + m.como + "</small></div>" +
+      mao(m.exemplo, true) + "</div>").join("");
 }
 
 function telaRanking(){

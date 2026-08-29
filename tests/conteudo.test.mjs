@@ -11,8 +11,9 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { TRILHAS } from "../content/trilhas.ts";
+import { MAOS } from "../content/maos.ts";
 import { NOMES_ICONE } from "../lib/icones.ts";
-import { gerar } from "../tools/gerar-trilhas.mjs";
+import { gerar, gerarMaos } from "../tools/gerar-trilhas.mjs";
 
 const licoes = TRILHAS.flatMap((t) => t.licoes);
 
@@ -95,18 +96,41 @@ for (const l of licoes) {
   );
 }
 
+/* ---------- ranking das mãos ---------- */
+{
+  /* A ordem é a regra: sem campo de força, quem manda é o índice. Se alguém
+     inserir uma mão no meio, estes dois asserts é que avisam. */
+  assert.equal(MAOS.at(0).id, "carta-alta", "a lista tem que começar na mão mais fraca");
+  assert.equal(MAOS.at(-1).id, "royal-flush", "a lista tem que terminar na mão mais forte");
+
+  const vistos = new Set();
+  for (const m of MAOS) {
+    assert.ok(/^[a-z][a-z0-9-]*$/.test(m.id), `id de mão fora do padrão: ${m.id}`);
+    assert.ok(!vistos.has(m.id), `id de mão repetido: ${m.id}`);
+    vistos.add(m.id);
+    assert.ok(m.como.length > 0, `mão sem explicação: ${m.id}`);
+    /* Cinco cartas sempre: mão de poker é de cinco, e a tela desenha o que vier. */
+    assert.equal(m.exemplo.length, 5, `mão ${m.id} não tem 5 cartas`);
+    for (const c of m.exemplo) {
+      assert.match(c, /^(10|[2-9]|[AKQJ])[♠♥♦♣]$/, `carta inválida em ${m.id}: ${c}`);
+    }
+  }
+}
+
 /* ---------- o legado segue em dia ---------- */
 {
-  const emDisco = readFileSync(new URL("../data/trilhas.js", import.meta.url), "utf8");
-  assert.equal(
-    emDisco,
-    gerar(),
-    "data/trilhas.js está fora de sincronia com content/trilhas.ts — " +
-      "rode `node tools/gerar-trilhas.mjs`",
-  );
+  for (const [arquivo, monta] of [["trilhas", gerar], ["maos", gerarMaos]]) {
+    const emDisco = readFileSync(new URL(`../data/${arquivo}.js`, import.meta.url), "utf8");
+    assert.equal(
+      emDisco,
+      monta(),
+      `data/${arquivo}.js está fora de sincronia com content/${arquivo}.ts — ` +
+        "rode `node tools/gerar-trilhas.mjs`",
+    );
+  }
 }
 
 console.log(
-  `ok — conteúdo: ${licoes.length} lições, ` +
+  `ok — conteúdo: ${licoes.length} lições, ${MAOS.length} mãos, ` +
     `${licoes.reduce((n, l) => n + l.q.length, 0)} perguntas, ids, ícones e legado em dia`,
 );

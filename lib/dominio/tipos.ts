@@ -72,3 +72,12 @@ export interface Trilha {
   licoes: Licao[];
   embreve?: boolean;
 }
+
+/** Uma linha do ranking das mãos. A força vem da posição na lista de
+    `content/maos.ts` — do índice 0 (mais fraca) ao último (mais forte). */
+export interface Mao {
+  id: string;
+  nome: string;
+  exemplo: Carta[];
+  como: string;
+}

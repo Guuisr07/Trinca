@@ -1,7 +1,7 @@
 /* GERADO por tools/gerar-trilhas.mjs — não editar na mão.
-   A fonte do conteúdo é content/trilhas.ts (ADR-007). Editou aqui? O
-   próximo `node tools/gerar-trilhas.mjs` apaga, e o teste de conteúdo
-   falha antes disso. */
+   A fonte do conteúdo é content/ (ADR-007). Editou aqui? O próximo
+   `node tools/gerar-trilhas.mjs` apaga, e o teste de conteúdo falha
+   antes disso. */
 export const TRILHAS = [
  {
   "id": "f",

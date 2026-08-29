@@ -1,8 +1,8 @@
-/* Gera data/trilhas.js a partir de content/trilhas.ts.
+/* Gera data/trilhas.js e data/maos.js a partir de content/.
 
    Existe porque o conteúdo tem uma fonte só (ADR-007) e o app legado é ES
    modules no browser — não lê .ts. Enquanto os dois convivem (até o passo 5
-   da ADR-012), quem edita lição edita `content/` e roda isto.
+   da ADR-012), quem edita lição ou ranking de mão edita `content/` e roda isto.
 
    A tradução de volta pra emoji é de propósito: o legado imprime `icone` como
    texto. Some junto com data/trilhas.js no passo 5.
@@ -13,8 +13,10 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { TRILHAS } from "../content/trilhas.ts";
+import { MAOS } from "../content/maos.ts";
 
 const DESTINO = fileURLToPath(new URL("../data/trilhas.js", import.meta.url));
+const DESTINO_MAOS = fileURLToPath(new URL("../data/maos.js", import.meta.url));
 
 const CARACTERE_NAIPE = { e: "♠", c: "♥", o: "♦", p: "♣" };
 
@@ -28,6 +30,12 @@ const EMOJI_LEGADO = {
   WalletCards: "\u{1F0CF}",
   Split: "\u{1F6A6}",
 };
+
+const AVISO =
+  "/* GERADO por tools/gerar-trilhas.mjs — não editar na mão.\n" +
+  "   A fonte do conteúdo é content/ (ADR-007). Editou aqui? O próximo\n" +
+  "   `node tools/gerar-trilhas.mjs` apaga, e o teste de conteúdo falha\n" +
+  "   antes disso. */\n";
 
 function paraLegado(trilha) {
   const emBreve = trilha.embreve ? { embreve: true } : {};
@@ -52,19 +60,21 @@ function paraLegado(trilha) {
 }
 
 export function gerar() {
-  return (
-    "/* GERADO por tools/gerar-trilhas.mjs — não editar na mão.\n" +
-    "   A fonte do conteúdo é content/trilhas.ts (ADR-007). Editou aqui? O\n" +
-    "   próximo `node tools/gerar-trilhas.mjs` apaga, e o teste de conteúdo\n" +
-    "   falha antes disso. */\n" +
-    "export const TRILHAS = " +
-    JSON.stringify(TRILHAS.map(paraLegado), null, 1) +
-    ";\n"
-  );
+  return AVISO + "export const TRILHAS = " + JSON.stringify(TRILHAS.map(paraLegado), null, 1) + ";\n";
 }
 
+/* Mão não tem ícone nem versão — sai como está, só perde o tipo. */
+export function gerarMaos() {
+  return AVISO + "export const MAOS = " + JSON.stringify(MAOS, null, 1) + ";\n";
+}
+
+const SAIDAS = [
+  [DESTINO, gerar],
+  [DESTINO_MAOS, gerarMaos],
+];
+
 export function conferir() {
-  return readFileSync(DESTINO, "utf8") === gerar();
+  return SAIDAS.every(([alvo, monta]) => readFileSync(alvo, "utf8") === monta());
 }
 
 /* Só age quando chamado na linha de comando. Importar este módulo não pode
@@ -72,13 +82,15 @@ export function conferir() {
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   if (process.argv.includes("--conferir")) {
     if (!conferir()) {
-      console.error("data/trilhas.js está fora de sincronia com content/trilhas.ts.");
+      console.error("data/ está fora de sincronia com content/.");
       console.error("Rode: node tools/gerar-trilhas.mjs");
       process.exit(1);
     }
-    console.log("ok — data/trilhas.js em dia com o conteúdo");
+    console.log("ok — data/ em dia com o conteúdo");
   } else {
-    writeFileSync(DESTINO, gerar());
-    console.log("escrito:", DESTINO);
+    for (const [alvo, monta] of SAIDAS) {
+      writeFileSync(alvo, monta());
+      console.log("escrito:", alvo);
+    }
   }
 }
