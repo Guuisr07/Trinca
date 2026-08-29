@@ -10,10 +10,12 @@ está em saber por que não fizemos do outro jeito.
 **Status atual:** passos 1 a 3 da ADR-012 entregues em 24/08/2026 — andaime
 Next 16 + React 19 + TS strict + Tailwind v4 com os tokens do `DESIGN.md`,
 domínio em TS puro em `lib/dominio/`, e conteúdo com fonte única em
-`content/trilhas.ts`. Decididas: ADR-001 a ADR-005, ADR-007, ADR-010 e
-ADR-013. Seguem proposta: ADR-006 (Supabase), ADR-008 (sincronia), ADR-011
-(assinatura). O app de verdade ainda é o HTML puro — roda em
-`npm run dev:atual` até o passo 5.
+`content/`. Decididas: ADR-001 a ADR-005, ADR-007, ADR-010, ADR-013,
+ADR-014 e ADR-015. Seguem proposta: ADR-006 (Supabase), ADR-008 (sincronia),
+ADR-011 (assinatura). O app de verdade ainda é o HTML puro — roda em
+`npm run dev:atual` até o passo 5. Entregas de 29/08/2026 (aba de consulta com
+o ranking das mãos, escolha da cara da carta e cores de naipe de mesa) estão no
+ar na `main`, e a fonte do conteúdo novo vive aqui.
 
 ---
 
@@ -443,6 +445,72 @@ Passos 1 a 5 não mudam o que o usuário vê. Se mudarem, é bug — não é mel
 
 Deploy: Netlify roda Next e a integração já está de pé. Fica. Migrar pra Vercel
 é conversa pra quando alguma coisa do Next não funcionar lá, não antes.
+
+---
+
+## ADR-014 — Material de consulta é aba, não lição
+
+*29/08/2026 — decidido*
+
+O ranking das mãos vive numa aba própria (`Mãos`), fora da trilha: não custa
+ficha, não dá XP, não depende de progresso e não trava. A fonte é
+`content/maos.ts`, separada de `content/trilhas.ts`.
+
+O caso de uso é outro: a pessoa está numa mesa presencial, com o celular na
+mão, e precisa saber se flush ganha de sequência **agora**. Enfiar isso na
+trilha faria a consulta passar por lição travada, ficha e tela de pergunta —
+três atritos entre a dúvida e a resposta.
+
+O que foi descartado:
+
+- **Deixar como lição f3 e mandar revisar.** Revisar lição concluída já é livre
+  e de graça, então funcionaria — mas são 6 telas de aula antes da tabela que
+  interessa, e só depois de a lição estar liberada
+- **Botão de "cola" dentro da lição.** Amarra a consulta ao lugar onde ela é
+  menos necessária: quem está na lição já tem a explicação na frente
+- **Campo `forca` em cada mão.** A ordem da lista é a força. Dois lugares
+  dizendo a mesma coisa é um pra sair de sincronia — a garantia está no teste,
+  que trava a primeira e a última mão
+
+Custo: uma quinta aba na nav (mobile: 5 botões numa barra de 100%) e uma
+segunda fonte de conteúdo pro gerador manter em dia.
+
+---
+
+## ADR-015 — Cor de naipe é padrão de mesa, e a cara da carta é do jogador
+
+*29/08/2026 — decidido*
+
+Duas coisas separadas que a mesma mudança resolveu.
+
+**As quatro cores viraram as do baralho de 4 cores de mesa:** espadas preto,
+copas vermelho, ouros azul, paus verde. Antes ouros era roxo (a secundária da
+marca) e espadas era o navy do texto. Bonito e errado: o app existe pra
+preparar alguém pro jogo de verdade, e treinar a pessoa numa correspondência
+cor→naipe que a mesa não usa é ensinar o contrário.
+
+**A face da carta virou escolha do jogador** (`<html data-baralho>`, chave
+`trinca.baralho`): `cheio` pinta a carta inteira na cor do naipe — legível de
+relance, bom pra aprender —, `classico` deixa a carta branca com o naipe
+tingido, que é o que a pessoa tem na mão fora do app. Aplicada pelo script
+inline do `<head>`, junto com o tema, pra carta não nascer errada e piscar.
+
+O que foi descartado:
+
+- **Só a carta branca.** Perde o ganho pedagógico do bloco de cor cheio, que é
+  o que faz o iniciante ler o naipe sem procurar o símbolo
+- **Só a colorida (o que existia).** Não é o baralho que ele vai encontrar na
+  mesa
+- **Detectar pela lição em que a pessoa está.** Automágico e imprevisível:
+  a carta mudaria sozinha no meio do uso
+
+Custo real, e por isso está aqui: **cor de naipe virou conteúdo.** A lição f1
+pergunta em que cor ouros aparece; a resposta era "roxo" e virou "azul", com
+`versao` da lição subindo pra 2. Mexer em `--n-*` agora obriga a reler o
+conteúdo — está escrito também no `DESIGN.md`.
+
+No tema escuro espadas ficou cinza claro em vez do lavanda antigo: com ouros
+azul, dois azuis lado a lado matariam a leitura por cor.
 
 ---
 
