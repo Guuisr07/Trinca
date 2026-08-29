@@ -7,7 +7,7 @@ export const TRILHAS = [
   { id:"f1", titulo:"O baralho", icone:"🂡",
     aula:[
       {h:"52 cartas, 4 naipes", p:"Poker usa o baralho comum: <em>13 valores</em> em <em>4 naipes</em>. Nada de coringa, nada de carta especial.", cartas:["A♠","K♥","Q♦","J♣"]},
-      {h:"Cada naipe tem uma cor", p:"Aqui no Trinca cada naipe usa <em>uma cor própria</em> — é o baralho de 4 cores usado nas salas online. Bate o olho e você já sabe o naipe, sem precisar enxergar o símbolo.", naipes:true},
+      {h:"Cada naipe tem uma cor", p:"Cada naipe usa <em>uma cor própria</em> — espadas preto, copas vermelho, ouros azul, paus verde. É o baralho de 4 cores das salas online: bate o olho e você já sabe o naipe, sem precisar enxergar o símbolo.", naipes:true},
       {h:"Nenhum naipe manda", p:"Diferente do truco, aqui <em>naipe não vale mais que naipe</em>. Um Ás de paus e um Ás de copas valem exatamente o mesmo.", cartas:["A♠","A♥","A♦","A♣"]},
       {h:"Naipe serve pra uma coisa", p:"Juntar <em>cinco cartas do mesmo naipe</em> forma o <em>flush</em> — uma mão forte. Fora isso, naipe não desempata nada."},
       {h:"Do 2 ao Ás", p:"A ordem de força é: 2, 3, 4... 10, Valete (J), Dama (Q), Rei (K) e <em>Ás (A), a mais forte</em>.",
@@ -19,7 +19,7 @@ export const TRILHAS = [
     q:[
       {p:"Quantas cartas tem o baralho do poker?", o:["52","48","54","40"], c:0, e:"52 cartas: 13 valores × 4 naipes. Sem coringa."},
       {p:"Qual naipe é o mais forte?", o:["Espadas","Copas","Nenhum, todos valem igual","Ouros"], c:2, e:"Naipe não desempata nada no Hold'em. Só serve pra formar flush."},
-      {p:"No baralho do Trinca, ouros (♦) aparece em qual cor?", o:["Vermelho","Roxo","Verde","Azul-escuro"], c:1, e:"Ouros é roxo, copas é vermelho, paus é verde e espadas é azul-escuro. Cor = naipe."},
+      {p:"No baralho de 4 cores, ouros (♦) aparece em qual cor?", o:["Vermelho","Azul","Verde","Preto"], c:1, e:"Ouros é azul, copas é vermelho, paus é verde e espadas é preto. Cor = naipe."},
       {p:"Qual dessas cartas é a mais forte?", o:["Rei","Dama","Ás","Valete"], c:2, e:"Ás é a carta mais alta. Só na sequência A-2-3-4-5 ele conta como a mais baixa."},
       {p:"Cinco cartas do mesmo naipe formam:", o:["Um par","Um flush","Uma trinca","Uma quadra"], c:1, e:"Flush é cinco do mesmo naipe. É pra isso que naipe serve."},
       {p:"Você recebe K♠ e K♥. Isso é...", o:["Um par de reis","Um flush","Uma trinca","Nada"], c:0, e:"Duas cartas do mesmo valor = par. Par de reis é uma mão inicial fortíssima."},

@@ -39,12 +39,13 @@
 :root[data-baralho="classico"] .carta, .demo-classico .carta{
   background:#fff;color:var(--cor);border:1px solid #DED6C4;
   box-shadow:0 3px 0 #00000014}
-/* As cores são as do tema claro, não as do baralho tradicional: a lição f1
-   ensina "ouros é roxo, espadas é azul-escuro". Trocar aqui faria a pergunta
-   dar resposta errada pra quem escolheu esse baralho. */
-:root[data-baralho="classico"] .carta.n-e, .demo-classico .carta.n-e{--cor:#241C4F}
+/* Tintas do baralho de 4 cores como ele é na mesa: espadas preto, copas
+   vermelho, ouros azul, paus verde. São as mesmas cores que os tokens --n-*
+   do tema claro, só que literais — a carta é branca nos dois temas, então o
+   naipe não pode clarear junto com o escuro e sumir no fundo. */
+:root[data-baralho="classico"] .carta.n-e, .demo-classico .carta.n-e{--cor:#1A1A1A}
 :root[data-baralho="classico"] .carta.n-c, .demo-classico .carta.n-c{--cor:#E8453F}
-:root[data-baralho="classico"] .carta.n-o, .demo-classico .carta.n-o{--cor:#5B3FA0}
+:root[data-baralho="classico"] .carta.n-o, .demo-classico .carta.n-o{--cor:#2E64C8}
 :root[data-baralho="classico"] .carta.n-p, .demo-classico .carta.n-p{--cor:#1E8A5B}
 :root .demo-cheio .carta{background:var(--cor);color:#fff;border:0;
   box-shadow:var(--carta-aro),0 3px 0 color-mix(in srgb,var(--cor) 62%,#000)}

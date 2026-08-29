@@ -38,6 +38,14 @@ Todas em `:root` (claro) e `:root[data-tema="dark"]` (escuro) de `css/base.css`.
 Naipes têm token próprio (`--n-e`, `--n-c`, `--n-o`, `--n-p`) porque o baralho de
 4 cores clareia no escuro e inverte o texto. Nunca escrever cor de naipe na mão.
 
+As cores são as do baralho de 4 cores de mesa — espadas preto, copas vermelho,
+ouros azul, paus verde — e a lição f1 ensina exatamente essas. Mudar token de
+naipe é mudar conteúdo junto.
+
+O jogador escolhe a **cara da carta** no perfil (`<html data-baralho>`, chave
+`trinca.baralho`): `cheio` pinta a face inteira na cor do naipe, `classico`
+deixa a carta branca com o naipe tingido. As duas usam as mesmas quatro cores.
+
 ## Tipografia
 
 - **Títulos:** Bricolage Grotesque, 700–800, `letter-spacing:-.02em` (`--disp`)
