@@ -19,7 +19,7 @@
   --no:#E8453F; --no-soft:#FDE2E0;
   --azul:#5B3FA0; --azul-soft:#EBE4F8;
   /* naipes: espadas, copas, ouros, paus */
-  --n-e:#241C4F; --n-c:#E8453F; --n-o:#5B3FA0; --n-p:#1E8A5B;
+  --n-e:#1A1730; --n-c:#E8453F; --n-o:#2E64C8; --n-p:#1E8A5B;
   --carta-aro:0 0 0 0 transparent;
   --capa-1:#FFFDF7; --capa-2:#F2E3C7;
   --sombra-plana:0 2px 0 var(--line);
@@ -34,7 +34,7 @@
   --no:#F4675F; --no-soft:#43201F;
   --azul:#8E6FE0; --azul-soft:#2C2350;
   /* naipe no escuro: mesma família, claro o bastante pra ler no fundo navy */
-  --n-e:#7B86C4; --n-c:#FF7A70; --n-o:#A98CF5; --n-p:#3ADFA0;
+  --n-e:#C9C6DA; --n-c:#FF7A70; --n-o:#79A6F0; --n-p:#3ADFA0;
   --carta-aro:inset 0 0 0 1.5px #ffffff2e;
   --capa-1:#241C4F; --capa-2:#0D0A18;
   --sombra-plana:0 2px 0 #00000059;

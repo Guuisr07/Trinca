@@ -26,7 +26,7 @@ export const TRILHAS = [
      },
      {
       "h": "Cada naipe tem uma cor",
-      "p": "Aqui no Trinca cada naipe usa <em>uma cor própria</em> — é o baralho de 4 cores usado nas salas online. Bate o olho e você já sabe o naipe, sem precisar enxergar o símbolo.",
+      "p": "Cada naipe usa <em>uma cor própria</em> — espadas preto, copas vermelho, ouros azul, paus verde. É o baralho de 4 cores das salas online: bate o olho e você já sabe o naipe, sem precisar enxergar o símbolo.",
       "naipes": true
      },
      {
@@ -103,15 +103,15 @@ export const TRILHAS = [
       "e": "Naipe não desempata nada no Hold'em. Só serve pra formar flush."
      },
      {
-      "p": "No baralho do Trinca, ouros (♦) aparece em qual cor?",
+      "p": "No baralho de 4 cores, ouros (♦) aparece em qual cor?",
       "o": [
        "Vermelho",
-       "Roxo",
+       "Azul",
        "Verde",
-       "Azul-escuro"
+       "Preto"
       ],
       "c": 1,
-      "e": "Ouros é roxo, copas é vermelho, paus é verde e espadas é azul-escuro. Cor = naipe."
+      "e": "Ouros é azul, copas é vermelho, paus é verde e espadas é preto. Cor = naipe."
      },
      {
       "p": "Qual dessas cartas é a mais forte?",
