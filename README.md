@@ -49,13 +49,14 @@ tools/
   cortar-logo.mjs   recorta a folha em PNGs com fundo transparente
 data/
   trilhas.js        todo o conteúdo das lições — só dados
+  maos.js           ranking das mãos, da mais fraca pra mais forte
   bots.js           oponentes do ranking
 js/
   main.js           boot: liga os módulos nesta ordem e só
   state.js          progresso do jogador + localStorage (dono único do estado)
   progresso.js      regras de liberação e XP — sem DOM, é o que os testes cobrem
   cartas.js         render de carta/mão/legenda
-  telas.js          trilha, ranking, perfil
+  telas.js          trilha, mãos, ranking, perfil
   licao.js          motor da lição (passos, vidas, feedback, conclusão)
   landing.js        tela de entrada
   confete.js        canvas da conclusão
