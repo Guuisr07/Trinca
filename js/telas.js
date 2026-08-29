@@ -5,6 +5,7 @@ import { $, $$ } from "./dom.js";
 import { TRILHAS } from "../data/trilhas.js";
 import { MAOS } from "../data/maos.js";
 import { mao } from "./cartas.js";
+import { BARALHOS, baralhoAtual, escolherBaralho } from "./tema.js";
 import { BOTS } from "../data/bots.js";
 import { S, salvar, zerar, xpDeHoje, META_DIA, MAX_VIDAS, vidasAgora,
          proximaVidaEm, formatarEspera } from "./state.js";
@@ -212,6 +213,18 @@ function telaRanking(){
   $("#tela").innerHTML = html;
 }
 
+/* Prévia lado a lado: cada opção desenha a mesma mão no seu próprio estilo,
+   por classe (`.demo-*`), não pelo <html data-baralho> — senão as duas sairiam
+   iguais e a escolha viraria adivinhação. */
+function opcoesBaralho(){
+  const atual = baralhoAtual();
+  return '<div class="opcoes-baralho">' + BARALHOS.map(b =>
+    '<button class="opcao-baralho demo-' + b.id + (b.id === atual ? " on" : "") +
+    '" data-escolha-baralho="' + b.id + '" aria-pressed="' + (b.id === atual) + '">' +
+    mao(["K♠","K♥","K♣"], true) + "<div><b>" + b.nome + "</b><small>" + b.desc +
+    "</small></div></button>").join("") + "</div>";
+}
+
 function telaPerfil(){
   const tentativas = S.acertos + S.erros;
   const precisao = tentativas ? Math.round(S.acertos / tentativas * 100) : 0;
@@ -229,6 +242,7 @@ function telaPerfil(){
       '<div class="caixa"><b>' + feitasCount() + "/" + totalLicoes() + "</b><small>lições</small></div>" +
       '<div class="caixa"><b>' + precisao + "%</b><small>de acerto</small></div>" +
     "</div>" +
+    '<div class="cap" style="margin-bottom:10px">Cartas</div>' + opcoesBaralho() +
     '<div class="cap" style="margin-bottom:10px">Conquistas</div>' +
     conq.map(c => '<div class="conquista' + (c.ok ? "" : " off") + '"><span>' + c.i +
       "</span><div><b>" + c.t + "</b><small>" + c.d + "</small></div></div>").join("") +
@@ -240,6 +254,8 @@ function telaPerfil(){
         (S.vip ? "Desligar Trinca+" : "Ligar Trinca+ (prévia)") + "</button></div>" +
     '<button class="bt fantasma" id="zerar" style="margin-top:18px">Zerar meu progresso</button>';
   // ponytail: chave local, sem cobrança. Vira checagem de assinatura quando houver conta.
+  $("#tela").querySelectorAll("[data-escolha-baralho]").forEach(b =>
+    b.addEventListener("click", () => { escolherBaralho(b.dataset.escolhaBaralho); render(); }));
   $("#vip").addEventListener("click", () => {
     S.vip = !S.vip;
     if (!S.vip && S.vidas <= 0){ S.vidas = 1; S.gastaEm = Date.now(); }  // não sai devendo

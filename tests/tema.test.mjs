@@ -24,5 +24,26 @@ await p.waitForTimeout(700);
 await p.click(".nav .troca-tema");    // o switch da nav é o mesmo componente
 assert.equal(await tema(), "light");
 
+/* Baralho: mesma regra do tema — escolha no perfil, aplicada no <html> e viva
+   depois do reload. É o que faz a carta nascer certa antes da primeira pintura. */
+const baralho = () => p.evaluate(() => document.documentElement.dataset.baralho);
+assert.equal(await baralho(), "cheio", "sem escolha salva, o baralho é o colorido");
+
+await p.click('.nav button[data-aba="perfil"]');
+await p.click('[data-escolha-baralho="classico"]');
+assert.equal(await baralho(), "classico", "clique não trocou o baralho");
+assert.equal(await p.getAttribute('[data-escolha-baralho="classico"]', "aria-pressed"), "true");
+
+await p.reload();
+assert.equal(await baralho(), "classico", "escolha do baralho não sobreviveu ao reload");
+
+/* A carta clássica é branca nos dois temas — se o naipe clareasse junto com o
+   tema escuro, sumiria no branco. */
+await p.click("#entrar");
+await p.click('.nav button[data-aba="maos"]');
+const fundo = await p.evaluate(() =>
+  getComputedStyle(document.querySelector(".mao-linha .carta")).backgroundColor);
+assert.equal(fundo, "rgb(255, 255, 255)", "carta clássica não ficou branca");
+
 await b.close();
-console.log("ok — tema troca nos dois switches e persiste");
+console.log("ok — tema e baralho trocam, persistem e nascem aplicados");

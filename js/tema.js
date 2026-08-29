@@ -24,3 +24,23 @@ export function ligarTema(){
   }));
   pintar();
 }
+
+/* ---------- baralho ----------
+   Mesma ideia do tema: escolha visual, chave própria, aplicada no <html>. O
+   script inline do <head> já leu a chave antes da primeira pintura. */
+
+const CHAVE_BARALHO = "trinca.baralho";
+
+export const BARALHOS = [
+  { id: "cheio", nome: "Colorido", desc: "Face inteira na cor do naipe. Bate o olho e você sabe." },
+  { id: "classico", nome: "Clássico", desc: "Carta branca, naipe colorido. Igual ao baralho da mesa." }
+];
+
+export function baralhoAtual(){
+  return raiz.dataset.baralho === "classico" ? "classico" : "cheio";
+}
+
+export function escolherBaralho(id){
+  raiz.dataset.baralho = id;
+  try { localStorage.setItem(CHAVE_BARALHO, id); } catch {}
+}

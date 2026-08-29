@@ -30,3 +30,34 @@
 .opc .mao{justify-content:flex-start;margin-bottom:7px}
 .opc .rot{font-size:13.5px;color:var(--muted);font-weight:600}
 
+/* ---------- baralho clássico ----------
+   Face branca com naipe colorido: o baralho de 4 cores como ele sai da caixa
+   numa mesa presencial. As tintas são literais de propósito — a carta é branca
+   nos dois temas, então a cor do naipe não pode clarear junto com o tema
+   escuro (o lavanda de --n-e some no branco). A escolha vive em
+   <html data-baralho>; `.demo-*` existe pra prévia das duas lado a lado. */
+:root[data-baralho="classico"] .carta, .demo-classico .carta{
+  background:#fff;color:var(--cor);border:1px solid #DED6C4;
+  box-shadow:0 3px 0 #00000014}
+/* As cores são as do tema claro, não as do baralho tradicional: a lição f1
+   ensina "ouros é roxo, espadas é azul-escuro". Trocar aqui faria a pergunta
+   dar resposta errada pra quem escolheu esse baralho. */
+:root[data-baralho="classico"] .carta.n-e, .demo-classico .carta.n-e{--cor:#241C4F}
+:root[data-baralho="classico"] .carta.n-c, .demo-classico .carta.n-c{--cor:#E8453F}
+:root[data-baralho="classico"] .carta.n-o, .demo-classico .carta.n-o{--cor:#5B3FA0}
+:root[data-baralho="classico"] .carta.n-p, .demo-classico .carta.n-p{--cor:#1E8A5B}
+:root .demo-cheio .carta{background:var(--cor);color:#fff;border:0;
+  box-shadow:var(--carta-aro),0 3px 0 color-mix(in srgb,var(--cor) 62%,#000)}
+:root[data-tema="dark"] .demo-cheio .carta{color:#16112E}
+:root .demo-cheio .carta.n-e{--cor:var(--n-e)} :root .demo-cheio .carta.n-c{--cor:var(--n-c)}
+:root .demo-cheio .carta.n-o{--cor:var(--n-o)} :root .demo-cheio .carta.n-p{--cor:var(--n-p)}
+
+/* Escolha do baralho, na aba Perfil. */
+.opcoes-baralho{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.opcao-baralho{background:var(--surface);border:2px solid var(--line);border-radius:16px;
+  padding:13px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:9px}
+.opcao-baralho.on{border-color:var(--brass);background:var(--brass-soft)}
+.opcao-baralho .mao{gap:4px}
+.opcao-baralho .carta{animation:none}
+.opcao-baralho b{font-size:14px}
+.opcao-baralho small{display:block;color:var(--muted);font-size:12px;line-height:1.35}
