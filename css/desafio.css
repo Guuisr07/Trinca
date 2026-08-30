@@ -1,0 +1,61 @@
+/* Desafio — boss fight ao fim da trilha. */
+.desafio{display:none;flex-direction:column;min-height:100vh}
+.desafio.on{display:flex;position:fixed;inset:0;z-index:10;background:var(--bg);overflow-y:auto}
+
+/* Intro */
+.desafio-intro{text-align:center;padding:30px 20px 40px}
+.dom-desafio-intro{margin:0 auto 20px}
+.dom-avatar-grande{width:150px;height:auto;margin:0 auto;display:block;
+  animation:dom-entrada .6s cubic-bezier(.2,1.4,.4,1)}
+@keyframes dom-entrada{from{transform:scale(.3) rotate(-12deg);opacity:0}to{transform:none;opacity:1}}
+.desafio-meta{display:flex;gap:10px;justify-content:center;margin:20px 0 26px}
+
+/* Mesa de jogo */
+.desafio-palco{padding-bottom:180px !important}
+.mesa-desafio{background:var(--surface);border:2px solid var(--line);border-radius:20px;
+  padding:20px;margin-bottom:20px;display:flex;flex-direction:column;align-items:center;gap:16px}
+
+.dom-lado{display:flex;flex-direction:column;align-items:center;gap:8px}
+.dom-cartas{display:flex;flex-direction:column;align-items:center;gap:4px}
+.dom-avatar{transition:transform .3s cubic-bezier(.2,1.4,.4,1)}
+.dom-avatar img{width:80px;height:auto;border-radius:50%;
+  border:3px solid var(--line);background:var(--surface-2)}
+
+/* Reações do Dom Naipe */
+.dom-pensa .dom-avatar img,.dom-pensa img{animation:dom-pensa .5s ease}
+@keyframes dom-pensa{0%,100%{transform:none}25%{transform:rotate(-5deg)}75%{transform:rotate(5deg)}}
+
+.dom-ri img,.dom-provoca img{animation:dom-ri .4s cubic-bezier(.2,1.4,.4,1)}
+@keyframes dom-ri{from{transform:scale(1.2)}to{transform:none}}
+
+.dom-perde img{animation:dom-perde .5s ease}
+@keyframes dom-perde{0%{transform:none}30%{transform:translateY(-8px)}60%{transform:translateY(3px)}100%{transform:none}}
+
+.dom-blefa img{animation:dom-blefa .6s ease}
+@keyframes dom-blefa{0%{transform:none}50%{transform:scale(1.1) rotate(3deg)}100%{transform:none}}
+
+.board-desafio{display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:12px;background:color-mix(in srgb, var(--ok) 8%, transparent);
+  border-radius:14px;width:100%}
+
+.jogador-lado{display:flex;flex-direction:column;align-items:center;gap:4px}
+.jogador-cartas{display:flex;flex-direction:column;align-items:center;gap:4px}
+
+.cenario-corpo{margin-top:4px}
+.situacao{font-size:14.5px;color:var(--muted);margin:0 0 12px;line-height:1.55;
+  font-style:italic}
+
+/* Estrelas */
+.estrelas-desafio{display:flex;justify-content:center;gap:6px;margin:8px 0 20px;font-size:36px}
+.estrela{color:var(--line);transition:color .3s,transform .3s}
+.estrela.cheia{color:var(--brass);animation:estrela-in .4s cubic-bezier(.2,1.4,.4,1)}
+@keyframes estrela-in{from{transform:scale(0) rotate(-30deg)}to{transform:none}}
+
+/* Botão desafio na trilha */
+.no-desafio{position:relative}
+.no-desafio .bolha{background:var(--brass) !important;color:var(--brass-ink) !important;
+  box-shadow:0 0 0 4px var(--brass-soft),0 4px 0 color-mix(in srgb,var(--brass) 50%,#000) !important}
+.no-desafio.feita .bolha{background:var(--ok) !important;color:#fff !important;
+  box-shadow:0 0 0 4px var(--ok-soft),0 4px 0 color-mix(in srgb,var(--ok) 50%,#000) !important}
+.no-desafio.travada .bolha{background:var(--surface-2) !important;color:var(--muted) !important;
+  box-shadow:none !important}

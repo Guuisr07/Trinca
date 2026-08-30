@@ -81,3 +81,41 @@ export interface Mao {
   exemplo: Carta[];
   como: string;
 }
+
+/* Desafio — boss fight ao fim de cada trilha. */
+
+/** Reação do Dom Naipe num cenário. */
+export type ReacaoDom = "pensa" | "blefa" | "ri" | "perde" | "provoca";
+
+/** Um cenário do desafio: situação de poker com decisão. */
+export interface Cenario {
+  /** Contexto narrado: "Você está no botão com..." */
+  situacao: string;
+  /** Suas cartas fechadas. */
+  mao: Carta[];
+  /** Cartas na mesa (pode estar vazio = pré-flop). */
+  board?: Carta[];
+  /** Cartas do Dom Naipe (reveladas no feedback). */
+  maoDom?: Carta[];
+  /** Pergunta curta. */
+  pergunta: string;
+  /** Alternativas de texto. */
+  opcoes: string[];
+  /** Índice da correta. */
+  correta: number;
+  /** Explicação mostrada no feedback. */
+  explicacao: string;
+  /** Reação do Dom Naipe quando o jogador acerta. */
+  acerto: ReacaoDom;
+  /** Reação do Dom Naipe quando o jogador erra. */
+  erro: ReacaoDom;
+}
+
+/** Desafio de uma trilha. */
+export interface Desafio {
+  /** Id estável: `desafio-{trilhaId}`. */
+  id: string;
+  trilhaId: string;
+  nome: string;
+  cenarios: Cenario[];
+}

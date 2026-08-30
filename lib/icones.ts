@@ -20,6 +20,7 @@ export const NOMES_ICONE = [
   // ícones de interface
   "Flame",
   "Lock",
+  "Swords",
   "Map",
   "Target",
   "Trophy",

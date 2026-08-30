@@ -11,6 +11,7 @@ import { TelaPerfil } from "@/components/TelaPerfil";
 import { TelaPresencial } from "@/components/TelaPresencial";
 import { TrocaTemaNav } from "@/components/TrocaTemaNav";
 import { ModalLicao } from "@/components/Licao";
+import { ModalDesafio } from "@/components/TelaDesafio";
 import { Landing } from "@/components/Landing";
 
 export type Aba = "trilha" | "maos" | "mesa" | "ranking" | "perfil";
@@ -19,15 +20,17 @@ export function AppShell() {
   const [aba, setAba] = useState<Aba>("trilha");
   const [landing, setLanding] = useState(true);
   const [licaoAberta, setLicaoAberta] = useState<string | null>(null);
+  const [desafioAberto, setDesafioAberto] = useState<string | null>(null);
   const { progresso } = useEstado();
   const agora = Date.now();
   const vidas = fichasAgora(progresso, agora);
 
   const abrirLicao = useCallback((id: string) => setLicaoAberta(id), []);
+  const abrirDesafio = useCallback((id: string) => setDesafioAberto(id), []);
 
   const tela = useCallback(() => {
     switch (aba) {
-      case "trilha": return <TelaTrilha onAbrirLicao={abrirLicao} />;
+      case "trilha": return <TelaTrilha onAbrirLicao={abrirLicao} onAbrirDesafio={abrirDesafio} />;
       case "maos": return <TelaMaos />;
       case "mesa": return <TelaPresencial />;
       case "ranking": return <TelaRanking />;
@@ -71,6 +74,7 @@ export function AppShell() {
         </div>
       </main>
       <ModalLicao licaoId={licaoAberta} onFechar={() => setLicaoAberta(null)} />
+      <ModalDesafio desafioId={desafioAberto} onFechar={() => setDesafioAberto(null)} />
     </div>
     </>
   );

@@ -2,14 +2,16 @@
 
 import { useEstado } from "@/lib/estado";
 import { TRILHAS } from "@/content/trilhas";
+import { DESAFIOS } from "@/content/desafios";
 import { Icone } from "@/components/Icone";
 import {
   liberadas, proximaLicao, xpPossivel, totalLicoes,
 } from "@/lib/dominio/trilha";
 import { feitasCount, feita, xpDeHoje } from "@/lib/dominio/progresso";
 import { fichasAgora, proximaFichaEm, formatarEspera, MAX_FICHAS } from "@/lib/dominio/fichas";
+import { desafioLiberado, desafioFeito, xpDoDesafio } from "@/lib/dominio/desafio";
 
-export function TelaTrilha({ onAbrirLicao }: { onAbrirLicao: (id: string) => void }) {
+export function TelaTrilha({ onAbrirLicao, onAbrirDesafio }: { onAbrirLicao: (id: string) => void; onAbrirDesafio: (id: string) => void }) {
   const { progresso } = useEstado();
   const agora = Date.now();
   const abertas = liberadas(TRILHAS, progresso);
@@ -41,7 +43,7 @@ export function TelaTrilha({ onAbrirLicao }: { onAbrirLicao: (id: string) => voi
       </div>
 
       {TRILHAS.map((t, ti) => (
-        <TrilhaBloco key={t.id} trilha={t} ti={ti} abertas={abertas} progresso={progresso} semFicha={semFicha} onAbrirLicao={onAbrirLicao} />
+        <TrilhaBloco key={t.id} trilha={t} ti={ti} abertas={abertas} progresso={progresso} semFicha={semFicha} onAbrirLicao={onAbrirLicao} onAbrirDesafio={onAbrirDesafio} />
       ))}
     </>
   );
@@ -77,12 +79,13 @@ function Destaque({ prox, feitas, semFicha, agora, progresso, onAbrirLicao }: {
 
 const NAIPE_CHAR: Record<string, string> = { e: "♠", c: "♥", o: "♦", p: "♣" };
 
-function TrilhaBloco({ trilha: t, ti, abertas, progresso, semFicha, onAbrirLicao }: {
+function TrilhaBloco({ trilha: t, ti, abertas, progresso, semFicha, onAbrirLicao, onAbrirDesafio }: {
   trilha: import("@/lib/dominio/tipos").Trilha; ti: number;
   abertas: Record<string, boolean>;
   progresso: import("@/lib/dominio/tipos").Progresso;
   semFicha: boolean;
   onAbrirLicao: (id: string) => void;
+  onAbrirDesafio: (id: string) => void;
 }) {
   const feitas = t.licoes.filter(l => feita(progresso, l.id)).length;
   const pct = t.licoes.length ? Math.round(feitas / t.licoes.length * 100) : 0;
@@ -148,6 +151,8 @@ function TrilhaBloco({ trilha: t, ti, abertas, progresso, semFicha, onAbrirLicao
         })}
       </div>
 
+      <NoDesafio trilha={t} progresso={progresso} semFicha={semFicha} onAbrirDesafio={onAbrirDesafio} />
+
       <div className="fim-trilha">
         <div className="fichinhas">
           {["#E8453F", "#F5B82E", "#5B3FA0", "#241C4F"].map(c => (
@@ -157,5 +162,43 @@ function TrilhaBloco({ trilha: t, ti, abertas, progresso, semFicha, onAbrirLicao
         {pct === 100 ? "Trilha fechada. Boa!" : `${feitas} de ${t.licoes.length} lições — falta pouco`}
       </div>
     </>
+  );
+}
+
+function NoDesafio({ trilha, progresso, semFicha, onAbrirDesafio }: {
+  trilha: import("@/lib/dominio/tipos").Trilha;
+  progresso: import("@/lib/dominio/tipos").Progresso;
+  semFicha: boolean;
+  onAbrirDesafio: (id: string) => void;
+}) {
+  const desafio = DESAFIOS.find(d => d.trilhaId === trilha.id);
+  if (!desafio) return null;
+
+  const liberado = desafioLiberado(trilha, progresso);
+  const feito = desafioFeito(desafio, progresso);
+  const cls = feito ? "feita" : liberado ? "pronta" : "travada";
+
+  return (
+    <div className="trilha" style={{ marginTop: 0 }}>
+      <div className="fio desloc-2" />
+      <div className={`no no-desafio ${cls} desloc-2`}>
+        <button disabled={!liberado} onClick={() => onAbrirDesafio(desafio.id)}>
+          <div className="bolha">
+            {feito ? "★" : liberado
+              ? <Icone nome="Swords" className="size-7" />
+              : <Icone nome="Lock" className="size-7" />}
+          </div>
+        </button>
+        <b>{desafio.nome}</b>
+        <small>
+          {feito ? "desafio vencido ★" : liberado
+            ? (semFicha ? "sem ficha" : "desafio final")
+            : "complete as lições"}
+        </small>
+        <span className="xpzinho">
+          {feito ? "★ VENCIDO" : `+${xpDoDesafio(desafio.cenarios.length, desafio.cenarios.length)} XP`}
+        </span>
+      </div>
+    </div>
   );
 }
