@@ -225,7 +225,7 @@ export function ModalDesafio({
         <div className="mesa-desafio">
           <div className="dom-lado">
             <DomNaipe reacao={D.reacaoDom} />
-            {cenario.maoDom && D.fase === "feedback" && (
+            {cenario.maoDom && (
               <div className="dom-cartas">
                 <span className="cap">Dom Naipe</span>
                 <Mao cartas={cenario.maoDom} mini />

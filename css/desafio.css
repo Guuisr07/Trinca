@@ -11,7 +11,7 @@
 .desafio-meta{display:flex;gap:10px;justify-content:center;margin:20px 0 26px}
 
 /* Mesa de jogo */
-.desafio-palco{padding-bottom:180px !important}
+.desafio-palco{padding-bottom:260px !important}
 .mesa-desafio{background:var(--surface);border:2px solid var(--line);border-radius:20px;
   padding:20px;margin-bottom:20px;display:flex;flex-direction:column;align-items:center;gap:16px}
 
