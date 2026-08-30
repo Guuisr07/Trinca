@@ -43,7 +43,7 @@
 .meta b{display:block;font-family:var(--disp);font-size:17px;font-variant-numeric:tabular-nums}
 .meta small{color:var(--muted);font-size:10.5px;letter-spacing:.03em}
 
-.cabecalho-trilha{position:sticky;top:var(--sticky-top);z-index:4;overflow:hidden;background:var(--surface);
+.cabecalho-trilha{overflow:hidden;background:var(--surface);
   border:1px solid var(--line);border-radius:18px;
   padding:16px 18px;margin-bottom:26px;box-shadow:var(--shadow)}
 .cabecalho-trilha .naipe-marca{position:absolute;right:-10px;top:-26px;font-size:104px;line-height:1;

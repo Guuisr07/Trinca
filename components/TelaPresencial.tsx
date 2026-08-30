@@ -18,7 +18,7 @@ type Etapa = "inventario" | "config" | "resultado";
 const DENOMS_PADRAO = [1, 5, 10, 25, 50, 100];
 
 const COR_FICHA: Record<number, string> = {
-  1: "#FFFFFF",
+  1: "#C8C8C8",
   5: "#E8453F",
   10: "#2E64C8",
   25: "#22B573",
