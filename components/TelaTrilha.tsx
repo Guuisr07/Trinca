@@ -2,7 +2,7 @@
 
 import { useEstado } from "@/lib/estado";
 import { TRILHAS } from "@/content/trilhas";
-import { DESAFIOS } from "@/content/desafios";
+import { DESAFIOS, DESAFIOS_POR_TRILHA } from "@/content/desafios";
 import { Icone } from "@/components/Icone";
 import {
   liberadas, proximaLicao, xpPossivel, totalLicoes,
@@ -14,7 +14,7 @@ import { desafioLiberado, desafioFeito, xpDoDesafio } from "@/lib/dominio/desafi
 export function TelaTrilha({ onAbrirLicao, onAbrirDesafio }: { onAbrirLicao: (id: string) => void; onAbrirDesafio: (id: string) => void }) {
   const { progresso } = useEstado();
   const agora = Date.now();
-  const abertas = liberadas(TRILHAS, progresso);
+  const abertas = liberadas(TRILHAS, progresso, DESAFIOS_POR_TRILHA);
   const semFicha = !progresso.vip && fichasAgora(progresso, agora) <= 0;
   const prox = proximaLicao(TRILHAS, progresso, abertas);
   const feitas = feitasCount(progresso);

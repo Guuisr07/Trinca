@@ -26,8 +26,16 @@ export function acharLicao(trilhas: Trilha[], id: string): Licao | null {
 }
 
 /** Mapa id -> liberada. Lição abre com a anterior feita; trilha abre com a
-    anterior inteira. Trilha vazia ("em breve") fecha o que vem depois. */
-export function liberadas(trilhas: Trilha[], p: Progresso): Record<string, boolean> {
+    anterior inteira E o desafio da trilha anterior concluído (quando existe).
+    Trilha vazia ("em breve") fecha o que vem depois.
+
+    `desafiosPorTrilha` mapeia trilhaId → desafioId. Se a trilha tem desafio,
+    ele precisa estar em `feitas` pra abrir a próxima trilha. */
+export function liberadas(
+  trilhas: Trilha[],
+  p: Progresso,
+  desafiosPorTrilha: Record<string, string> = {},
+): Record<string, boolean> {
   const mapa: Record<string, boolean> = {};
   let trilhaAberta = true;
 
@@ -37,8 +45,10 @@ export function liberadas(trilhas: Trilha[], p: Progresso): Record<string, boole
       mapa[l.id] = trilhaAberta && anterior;
       anterior = feita(p, l.id);
     }
-    trilhaAberta =
-      trilhaAberta && t.licoes.length > 0 && t.licoes.every((l) => feita(p, l.id));
+    const licoesFeitas = t.licoes.length > 0 && t.licoes.every((l) => feita(p, l.id));
+    const desafioId = desafiosPorTrilha[t.id];
+    const desafioOk = !desafioId || feita(p, desafioId);
+    trilhaAberta = trilhaAberta && licoesFeitas && desafioOk;
   }
   return mapa;
 }

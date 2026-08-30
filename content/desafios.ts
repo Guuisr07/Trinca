@@ -170,3 +170,8 @@ export const DESAFIOS: Desafio[] = [
     ],
   },
 ] satisfies Desafio[];
+
+/** trilhaId → desafioId. Pra passar em `liberadas()`. */
+export const DESAFIOS_POR_TRILHA: Record<string, string> = Object.fromEntries(
+  DESAFIOS.map(d => [d.trilhaId, d.id]),
+);
