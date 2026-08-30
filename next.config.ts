@@ -4,6 +4,7 @@ import type { NextConfig } from "next";
    migração — roda com `npm run dev:legacy`. O corte é o passo 5 da ADR-012. */
 const config: NextConfig = {
   output: "export",
+  images: { unoptimized: true },
   typedRoutes: true,
 };
 
