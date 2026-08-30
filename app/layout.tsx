@@ -40,6 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="pt-BR" suppressHydrationWarning className={`${disp.variable} ${body.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: SCRIPT_TEMA }} />
+        <script dangerouslySetInnerHTML={{ __html: `try{document.documentElement.dataset.baralho=localStorage.getItem("trinca.baralho")||"cheio"}catch{document.documentElement.dataset.baralho="cheio"}` }} />
       </head>
       <body>{children}</body>
     </html>
