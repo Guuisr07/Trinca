@@ -44,7 +44,7 @@ export function AppShell() {
 
       <main className="col">
         <div className="topo">
-          <button className="marca" aria-label="Trinca">
+          <button className="marca" aria-label="Trinca" onClick={() => setAba("trilha")}>
             <span className="chevron" aria-hidden>&larr;</span>
             <Image src="/assets/marca/simbolo.png" alt="" width={26} height={26} className="h-[26px] w-auto" />
             Trinca
