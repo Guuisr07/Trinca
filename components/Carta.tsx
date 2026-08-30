@@ -14,7 +14,7 @@ export function Carta({ c, mini }: { c: string; mini?: boolean }) {
   const k = NAIPES[naipe] ?? "e";
   return (
     <div
-      className={`carta ${COR[k]} ${mini ? "mini" : ""}`}
+      className={`carta n-${k} ${mini ? "mini" : ""}`}
       data-naipe={k}
     >
       <u>{valor}</u>
