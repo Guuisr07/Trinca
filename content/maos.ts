@@ -1,11 +1,8 @@
 /* Ranking das mãos, da mais fraca pra mais forte. Só dados.
 
-   Fonte única (ADR-007), igual às trilhas: o app legado lê data/maos.js, que é
-   GERADO daqui por `node tools/gerar-trilhas.mjs`. Editar lá direto é perder o
-   trabalho na próxima geração — tests/conteudo.test.mjs falha se divergirem.
-
-   A ordem da lista É a regra: índice 0 é a mão mais fraca. Nada de campo
-   `forca` — duas fontes pra mesma coisa é uma pra sair de sincronia.
+   Fonte única (ADR-007). A ordem da lista É a regra: índice 0 é a mão mais
+   fraca. Nada de campo `forca` — duas fontes pra mesma coisa é uma pra sair
+   de sincronia.
 
    Os símbolos de naipe dentro de `exemplo` são dado de carta, não ícone. */
 

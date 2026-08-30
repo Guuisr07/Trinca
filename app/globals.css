@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
-/* CSS do app legado — reutilizado pelos componentes React do passo 4.
-   Sai no passo 5, quando Tailwind absorver tudo. */
+/* CSS legado — componentes React reutilizam. Migra pra Tailwind aos poucos. */
 
 /* Primitivas de base.css (tokens já estão em :root acima) */
 button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}

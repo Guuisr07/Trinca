@@ -7,15 +7,14 @@ está em saber por que não fizemos do outro jeito.
 
 `DESIGN.md` manda no visual. Este arquivo manda na estrutura.
 
-**Status atual:** passos 1 a 3 da ADR-012 entregues em 24/08/2026 — andaime
-Next 16 + React 19 + TS strict + Tailwind v4 com os tokens do `DESIGN.md`,
-domínio em TS puro em `lib/dominio/`, e conteúdo com fonte única em
-`content/`. Decididas: ADR-001 a ADR-005, ADR-007, ADR-010, ADR-013,
-ADR-014 e ADR-015. Seguem proposta: ADR-006 (Supabase), ADR-008 (sincronia),
-ADR-011 (assinatura). O app de verdade ainda é o HTML puro — roda em
-`npm run dev:atual` até o passo 5. Entregas de 29/08/2026 (aba de consulta com
-o ranking das mãos, escolha da cara da carta e cores de naipe de mesa) estão no
-ar na `main`, e a fonte do conteúdo novo vive aqui.
+**Status atual:** passos 1 a 5 da ADR-012 entregues. O app é Next 16 + React
+19 + TS strict + Tailwind v4. Domínio em `lib/dominio/`, conteúdo em
+`content/`, telas em `components/`. Legado removido (`index.html`, `js/`,
+`data/`, `serve.mjs`). `css/` ficou — os componentes React importam o CSS
+legado via `globals.css`; migra pra Tailwind aos poucos, sem pressa.
+Decididas: ADR-001 a ADR-005, ADR-007, ADR-010, ADR-013, ADR-014 e ADR-015.
+Seguem proposta: ADR-006 (Supabase), ADR-008 (sincronia), ADR-011
+(assinatura). Próximo passo: 6 (Supabase, login, Stripe).
 
 ---
 
@@ -435,10 +434,14 @@ Sem big bang. Cada passo entrega app funcionando.
    fora (ADR-007). Emoji de lição virou nome de ícone lucide e naipe de trilha
    virou `<Naipe />` (ADR-005). `data/trilhas.js` virou artefato gerado, e o
    teste falha se sair de sincronia
-4. **Telas** — trilha, lição, ranking, perfil. Uma por vez, com Playwright
-   comparando com o app atual
-5. **Corte** — Netlify aponta pro Next. `index.html`, `js/`, `css/`,
-   `data/` e `serve.mjs` saem, junto com o script `dev:atual`
+4. ~~**Telas**~~ — **feito em 29/08/2026.** Trilha, lição, mãos, ranking e
+   perfil portados pra React. CSS legado importado em `globals.css` em vez de
+   reescrito em Tailwind — paridade visual garantida, cleanup separado
+5. ~~**Corte**~~ — **feito em 29/08/2026.** Netlify aponta pro Next build.
+   `index.html`, `js/`, `data/`, `serve.mjs` e testes de browser legados
+   removidos. `css/` ficou: os componentes React importam via `globals.css`,
+   migra pra Tailwind aos poucos. `tools/gerar-trilhas.mjs` saiu junto com
+   `data/` — a fonte única agora é `content/` direto
 6. Só então: Supabase, login, Stripe
 
 Passos 1 a 5 não mudam o que o usuário vê. Se mudarem, é bug — não é melhoria.

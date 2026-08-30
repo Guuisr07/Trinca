@@ -1,9 +1,6 @@
 /* Conteúdo das trilhas. Só dados — nenhuma lógica, nenhum DOM.
 
-   Fonte única (ADR-007): quem edita lição edita aqui. O app legado lê
-   data/trilhas.js, que é GERADO deste arquivo por
-   `node tools/gerar-trilhas.mjs` — editar lá direto é perder o trabalho na
-   próxima geração, e tests/conteudo.test.mjs falha se os dois divergirem.
+   Fonte única (ADR-007): quem edita lição edita aqui.
 
    `id` é estável e nunca muda: o progresso do jogador é gravado por id, e
    renomear ou reordenar reescreveria o histórico de quem já jogou. Lição nova
@@ -11,9 +8,7 @@
    significa nada.
 
    `icone` é o nome do componente lucide, resolvido no render por
-   components/Icone.tsx. Nunca emoji (ADR-005). `naipe` da trilha vira
-   <Naipe />, e os simbolos de naipe dentro de `cartas` e `board` sao dado
-   de carta — esses continuam sendo caractere, nao icone. */
+   components/Icone.tsx. Nunca emoji (ADR-005). */
 
 import type { Trilha } from "@/lib/dominio/tipos.ts";
 

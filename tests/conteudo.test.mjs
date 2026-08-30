@@ -4,16 +4,14 @@
    quebra o build se um campo faltar ou vier torto. O que sobra pra cá são as
    regras que tipo nenhum pega: id estável e único, pergunta com resposta
    dentro do range, nenhuma pergunta cobrando aula que ainda não veio, ícone
-   registrado no bundle, e o data/trilhas.js do legado em dia.
+   registrado no bundle.
 
    Rodar:  node tests/conteudo.test.mjs */
 
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
 import { TRILHAS } from "../content/trilhas.ts";
 import { MAOS } from "../content/maos.ts";
 import { NOMES_ICONE } from "../lib/icones.ts";
-import { foraDeSincronia } from "../tools/gerar-trilhas.mjs";
 
 const licoes = TRILHAS.flatMap((t) => t.licoes);
 
@@ -117,18 +115,7 @@ for (const l of licoes) {
   }
 }
 
-/* ---------- o legado segue em dia ---------- */
-{
-  const atrasados = foraDeSincronia();
-  assert.deepEqual(
-    atrasados,
-    [],
-    `gerado fora de sincronia com content/: ${atrasados.join(", ")} — ` +
-      "rode: node tools/gerar-trilhas.mjs",
-  );
-}
-
 console.log(
   `ok — conteúdo: ${licoes.length} lições, ${MAOS.length} mãos, ` +
-    `${licoes.reduce((n, l) => n + l.q.length, 0)} perguntas, ids, ícones e legado em dia`,
+    `${licoes.reduce((n, l) => n + l.q.length, 0)} perguntas, ids e ícones ok`,
 );

@@ -2,23 +2,20 @@
   "name": "trinca",
   "private": true,
   "type": "module",
-  "description": "Poker do zero. Next + TS + Tailwind (ver ARQUITETURA.md). O app legado em HTML puro roda em paralelo ate o passo 5 da ADR-012.",
+  "description": "Poker do zero. Next + TS + Tailwind (ver ARQUITETURA.md).",
   "scripts": {
     "dev": "next dev",
-    "dev:atual": "node serve.mjs",
     "build": "next build",
     "start": "next start",
     "tipos": "tsc --noEmit",
-    "test": "node tests/dominio.test.mjs && node tests/conteudo.test.mjs && node tests/regras.test.js && node tests/fichas.test.mjs && node tests/licao.test.mjs && node tests/tema.test.mjs",
-    "test:dominio": "node tests/dominio.test.mjs && node tests/conteudo.test.mjs",
-    "conteudo": "node tools/gerar-trilhas.mjs"
+    "test": "node tests/dominio.test.mjs && node tests/conteudo.test.mjs",
+    "test:dominio": "node tests/dominio.test.mjs && node tests/conteudo.test.mjs"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^26.3.0",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",
-    "playwright": "1.62.1",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2"
   },
