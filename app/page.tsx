@@ -1,9 +1,10 @@
-"use client";
-
-import dynamic from "next/dynamic";
-
-const AppClient = dynamic(() => import("@/components/AppClient"), { ssr: false });
+import { EstadoProvider } from "@/components/EstadoProvider";
+import { AppShell } from "@/components/AppShell";
 
 export default function Home() {
-  return <AppClient />;
+  return (
+    <EstadoProvider>
+      <AppShell />
+    </EstadoProvider>
+  );
 }
