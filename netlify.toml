@@ -1,6 +1,7 @@
 # Next.js — passo 5 da ADR-012.
 [build]
   command = "npm run build"
+  publish = "out"
 
 [[headers]]
   for = "/*"
