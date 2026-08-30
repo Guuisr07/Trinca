@@ -8,10 +8,11 @@ import { TelaTrilha } from "@/components/TelaTrilha";
 import { TelaMaos } from "@/components/TelaMaos";
 import { TelaRanking } from "@/components/TelaRanking";
 import { TelaPerfil } from "@/components/TelaPerfil";
+import { TelaPresencial } from "@/components/TelaPresencial";
 import { TrocaTemaNav } from "@/components/TrocaTemaNav";
 import { ModalLicao } from "@/components/Licao";
 
-export type Aba = "trilha" | "maos" | "ranking" | "perfil";
+export type Aba = "trilha" | "maos" | "mesa" | "ranking" | "perfil";
 
 export function AppShell() {
   const [aba, setAba] = useState<Aba>("trilha");
@@ -26,6 +27,7 @@ export function AppShell() {
     switch (aba) {
       case "trilha": return <TelaTrilha onAbrirLicao={abrirLicao} />;
       case "maos": return <TelaMaos />;
+      case "mesa": return <TelaPresencial />;
       case "ranking": return <TelaRanking />;
       case "perfil": return <TelaPerfil />;
     }
@@ -82,6 +84,16 @@ function Nav({ aba, setAba }: { aba: Aba; setAba: (a: Aba) => void }) {
             <rect x="3" y="5" width="11" height="15" rx="2" fill="var(--surface)" />
           </svg>
         </span>Mãos
+      </button>
+      <button data-aba="mesa" className={aba === "mesa" ? "on" : ""} onClick={() => setAba("mesa")}>
+        <span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <ellipse cx="12" cy="12" rx="10" ry="7" />
+            <circle cx="7" cy="12" r="1.5" fill="currentColor" />
+            <circle cx="12" cy="10" r="1.5" fill="currentColor" />
+            <circle cx="17" cy="12" r="1.5" fill="currentColor" />
+          </svg>
+        </span>Mesa
       </button>
       <button data-aba="ranking" className={aba === "ranking" ? "on" : ""} onClick={() => setAba("ranking")}>
         <span>🏆</span>Ranking
