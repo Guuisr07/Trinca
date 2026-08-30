@@ -11,11 +11,13 @@ import { TelaPerfil } from "@/components/TelaPerfil";
 import { TelaPresencial } from "@/components/TelaPresencial";
 import { TrocaTemaNav } from "@/components/TrocaTemaNav";
 import { ModalLicao } from "@/components/Licao";
+import { Landing } from "@/components/Landing";
 
 export type Aba = "trilha" | "maos" | "mesa" | "ranking" | "perfil";
 
 export function AppShell() {
   const [aba, setAba] = useState<Aba>("trilha");
+  const [landing, setLanding] = useState(true);
   const [licaoAberta, setLicaoAberta] = useState<string | null>(null);
   const { progresso } = useEstado();
   const agora = Date.now();
@@ -34,6 +36,8 @@ export function AppShell() {
   }, [aba, abrirLicao]);
 
   return (
+    <>
+    {landing && <Landing onEntrar={() => setLanding(false)} />}
     <div className="app" id="app">
       <aside className="side">
         <button className="side-marca" aria-label="Trinca">
@@ -44,7 +48,7 @@ export function AppShell() {
 
       <main className="col">
         <div className="topo">
-          <button className="marca" aria-label="Trinca" onClick={() => setAba("trilha")}>
+          <button className="marca" aria-label="Trinca" onClick={() => setLanding(true)}>
             <span className="chevron" aria-hidden>&larr;</span>
             <Image src="/assets/marca/simbolo.png" alt="" width={26} height={26} className="h-[26px] w-auto" />
             Trinca
@@ -68,6 +72,7 @@ export function AppShell() {
       </main>
       <ModalLicao licaoId={licaoAberta} onFechar={() => setLicaoAberta(null)} />
     </div>
+    </>
   );
 }
 

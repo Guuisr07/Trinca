@@ -17,6 +17,7 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 @import "../css/motion.css";
 @import "../css/licao.css";
 @import "../css/web.css";
+@import "../css/landing.css";
 
 /* ============================================================
    Tokens do Trinca — ADR-004.
